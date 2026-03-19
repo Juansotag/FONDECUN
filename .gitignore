@@ -4,9 +4,6 @@ __pycache__/
 *.pyo
 .env
 
-# Data generada (se regenera con merge_data.py)
-data_merged.json
-
 # Archivos de Office temporales
 ~$*.xlsx
 ~$*.docx
