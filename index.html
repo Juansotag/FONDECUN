@@ -1282,7 +1282,7 @@
                                                     Normalizado</span>
                                             </div>
 
-                                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                            <div style="display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto; padding-right:8px;">
                                                 <template
                                                     x-for="item in getQualitativeDistribution(stage, qType.id, qType.color)">
                                                     <div>
@@ -3003,7 +3003,7 @@
                             const totalSchoolsInFilter = this.filteredIEDs.length || 1;
                             const maxCount = entries[0][1] || 1;
 
-                            return entries.slice(0, 10).map(([label, count]) => {
+                            return entries.slice(0, 25).map(([label, count]) => {
                                 const pct = (count / maxCount) * 100;
                                 const barPct = isNaN(pct) ? 0 : Math.max(pct, 2);
                                 return {
