@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *; worker-src 'self' blob:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *; worker-src 'self' blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataPromce</title>
     <meta name="description" content="Dashboard interactivo de seguimiento para instituciones educativas">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="styles.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -243,6 +245,67 @@
             color: #d97706;
         }
 
+        .qual-item-list {
+            margin: 8px 0;
+            padding-left: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .qual-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #334155;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .qual-item.logros { border-left-color: #10b981; background: #f0fdf4; color: #065f46; }
+        .qual-item.retos { border-left-color: #f43f5e; background: #fff1f2; color: #991b1b; }
+        .qual-item.sugerencias { border-left-color: #3b82f6; background: #eff6ff; color: #1e40af; }
+
+        .collapsible-text {
+            margin-top: 12px;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 8px;
+        }
+
+        .collapsible-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 6px 0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-trigger:hover {
+            color: var(--primary);
+        }
+
+        .collapsible-icon {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s;
+        }
+
+        .collapsible-icon.open {
+            transform: rotate(180deg);
+        }
+
         .stage-block {
             margin-bottom: 16px;
             border: 1px solid #e2e8f0;
@@ -472,23 +535,47 @@
             background: #fff;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            min-width: 90px;
+            width: 155px;
+            /* Unified size for all */
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            position: relative;
+            padding-right: 30px;
+            /* Space for the arrow */
         }
 
         .facet-select:hover {
             border-color: var(--primary);
             background: #f8fafc;
         }
+
+        .filter-arrow-icon {
+            width: 10px;
+            height: 10px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
         .sticky-filters-bar {
             position: sticky;
             top: 0;
-            z-index: 10001; /* Above Leaflet attribution (1000) */
+            z-index: 10001;
+            /* Above Leaflet attribution (1000) */
             background: #f8fafc;
             padding: 15px 20px;
             border-bottom: 2px solid #e2e8f0;
-            margin: -20px -20px 20px -20px; 
+            margin: -20px -20px 20px -20px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             width: calc(100% + 40px);
             display: flex;
@@ -504,9 +591,11 @@
             width: 100%;
         }
 
-        .map-card, .sankey-card {
+        .map-card,
+        .sankey-card {
             flex: 1;
-            min-width: 0; /* Important for flex child with chart */
+            min-width: 0;
+            /* Important for flex child with chart */
             background: white;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
@@ -520,7 +609,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             width: 100%;
         }
@@ -541,16 +630,21 @@
             <h1>DataPromce</h1>
         </div>
         <div class="header-actions top-logos">
-            <button @click="sidebarHidden = !sidebarHidden; setTimeout(() => { drawSankey(); if(map) map.invalidateSize(); }, 350)"
-                    style="margin-right: 20px; padding: 8px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: white; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
-                    onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc'"
-                    onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='white'">
+            <button
+                @click="sidebarHidden = !sidebarHidden; setTimeout(() => { drawSankey(); if(map) map.invalidateSize(); }, 350)"
+                style="margin-right: 20px; padding: 8px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: white; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
+                onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc'"
+                onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='white'">
                 <!-- Icono de flechas -->
-                <svg x-show="!sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                <svg x-show="!sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                 </svg>
-                <svg x-show="sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+                <svg x-show="sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
                 </svg>
                 <span x-text="sidebarHidden ? 'Mostrar Perfil' : 'Ocultar Perfil'"></span>
             </button>
@@ -566,48 +660,227 @@
             <div class="sticky-filters-bar">
                 <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; width:100%;">
                     <!-- Búsqueda -->
-                    <input type="text" x-model="search" placeholder="Buscar institución..." class="search-input" style="flex:1; min-width: 220px;">
-                    
-                    <!-- Municipio -->
-                    <select x-model="filterMunicipio" class="filter-select" style="min-width:140px;">
-                        <option value="">Municipio</option>
-                        <template x-for="mun in municipalitiesList" :key="mun">
-                            <option :value="mun" x-text="mun"></option>
-                        </template>
-                    </select>
+                    <input type="text" x-model="search" placeholder="Buscar institución..." class="search-input"
+                        style="flex:1; min-width: 220px;">
+
+                    <!-- Municipio (Multi-select) -->
+                    <div x-data="{ open: false }" @click.away="open = false" style="position:relative;">
+                        <button @click="open = !open" class="facet-select"
+                            style="width:155px; background:#fff; border-color:#cbd5e1; color:#1e293b;">
+                            <span x-text="filterMunicipio.length > 0 ? filterMunicipio.length + ' Mun.' : 'Municipio'"
+                                style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+                            <svg :style="open ? 'transform:rotate(180deg)' : ''" class="filter-arrow-icon" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition
+                            style="position:absolute; top:110%; left:0; width:220px; max-height:300px; overflow-y:auto; background:white; border:1px solid #cbd5e1; border-radius:8px; z-index:10002; padding:10px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);">
+                            <div
+                                style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:8px; position:sticky; top:0; background:white;">
+                                <div style="display:flex; gap:10px;">
+                                    <button @click="filterMunicipio = [...municipalitiesList]"
+                                        style="font-size:0.6rem; color:var(--primary); font-weight:800; cursor:pointer; background:none; border:none;">TODOS</button>
+                                    <button @click="filterMunicipio = []"
+                                        style="font-size:0.6rem; color:#ef4444; font-weight:800; cursor:pointer; background:none; border:none;">LIMPIAR</button>
+                                </div>
+                                <button @click="open = false"
+                                    style="font-size:0.6rem; color:#64748b; font-weight:800; cursor:pointer; background:none; border:none;">OK</button>
+                            </div>
+                            <template x-for="mun in municipalitiesList" :key="mun">
+                                <label
+                                    style="display:flex; align-items:center; gap:8px; font-size:0.7rem; padding:4px 0; cursor:pointer; font-weight:600; color:#475569;">
+                                    <input type="checkbox" :value="mun" x-model="filterMunicipio"
+                                        style="accent-color:var(--primary);">
+                                    <span x-text="mun"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
 
                     <!-- Slider de Participantes -->
-                    <div class="slider-container" style="display: flex; flex-direction: column; min-width: 180px; padding: 0 10px; flex-shrink:0;">
-                        <div style="font-size: 0.72rem; color: #475569; font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between;">
+                    <div class="slider-container"
+                        style="display: flex; flex-direction: column; min-width: 180px; padding: 0 10px; flex-shrink:0;">
+                        <div
+                            style="font-size: 0.72rem; color: #475569; font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between;">
                             <span>Participantes</span>
-                            <span x-text="filterParticipantesMin + ' - ' + (filterParticipantesMax >= maxParticipantes ? 'Max' : filterParticipantesMax)"></span>
+                            <span
+                                x-text="filterParticipantesMin + ' - ' + (filterParticipantesMax >= maxParticipantes ? 'Max' : filterParticipantesMax)"></span>
                         </div>
                         <div class="range-slider-wrapper">
                             <div class="range-slider-track"></div>
-                            <div class="range-slider-fill" 
-                                 :style="`left: ${(filterParticipantesMin / maxParticipantes) * 100}%; width: ${((filterParticipantesMax - filterParticipantesMin) / maxParticipantes) * 100}%;`" 
-                                 style="outline:none;">
+                            <div class="range-slider-fill"
+                                :style="`left: ${(filterParticipantesMin / maxParticipantes) * 100}%; width: ${((filterParticipantesMax - filterParticipantesMin) / maxParticipantes) * 100}%;`"
+                                style="outline:none;">
                             </div>
-                            <input type="range" class="range-slider-input" min="0" :max="maxParticipantes" x-model.number="filterParticipantesMin" @input="filterParticipantesMin = Math.min(filterParticipantesMin, filterParticipantesMax - 1)">
-                            <input type="range" class="range-slider-input" min="0" :max="maxParticipantes" x-model.number="filterParticipantesMax" @input="filterParticipantesMax = Math.max(filterParticipantesMax, filterParticipantesMin + 1)">
+                            <input type="range" class="range-slider-input" min="0" :max="maxParticipantes"
+                                x-model.number="filterParticipantesMin"
+                                @input="filterParticipantesMin = Math.min(filterParticipantesMin, filterParticipantesMax - 1)">
+                            <input type="range" class="range-slider-input" min="0" :max="maxParticipantes"
+                                x-model.number="filterParticipantesMax"
+                                @input="filterParticipantesMax = Math.max(filterParticipantesMax, filterParticipantesMin + 1)">
                         </div>
                     </div>
                 </div>
 
-                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; align-items:center; border-top:1px solid #f1f5f9; padding-top:12px; width:100%;">
-                    <select x-model="filterZona" class="filter-select facet-select"><option value="">Zona</option><template x-for="z in zonaList" :key="z"><option :value="z" x-text="z"></option></template></select>
-                    <select x-model="filterNiveles" class="filter-select facet-select"><option value="">Nivel</option><template x-for="n in nivelesList" :key="n"><option :value="n" x-text="n"></option></template></select>
-                    <select x-model="filterJornadas" class="filter-select facet-select"><option value="">Jornada</option><template x-for="j in jornadasList" :key="j"><option :value="j" x-text="j"></option></template></select>
-                    <select x-model="filterCaracter" class="filter-select facet-select"><option value="">Carácter</option><template x-for="c in caracterList" :key="c"><option :value="c" x-text="c"></option></template></select>
-                    <select x-model="filterModelo" class="filter-select facet-select"><option value="">Modelo</option><template x-for="m in modeloList" :key="m"><option :value="m" x-text="m"></option></template></select>
-                    <select x-model="filterEnfoque" class="filter-select facet-select"><option value="">Enfoque</option><template x-for="e in enfoqueList" :key="e"><option :value="e" x-text="e"></option></template></select>
-                    <select x-model="filterFamilia" class="filter-select facet-select"><option value="">Familia</option><template x-for="f in familiaList" :key="f"><option :value="f" x-text="f"></option></template></select>
-                    
-                    <div class="stages-filters" style="margin-left:auto; border-left:1px solid #e2e8f0; padding-left:15px; display:flex; gap:10px; align-items:center;">
-                        <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Etapas:</span>
+                <div
+                    style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; align-items:center; border-top:1px solid #f1f5f9; padding-top:12px; width:100%;">
+                    <div style="position:relative;">
+                        <select x-model="filterZona" class="filter-select facet-select" style="width:155px;">
+                            <option value="">Zona</option><template x-for="z in zonaList" :key="z">
+                                <option :value="z" x-text="z"></option>
+                            </template>
+                        </select>
+                        <svg class="filter-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div style="position:relative;">
+                        <select x-model="filterNiveles" class="filter-select facet-select" style="width:155px;">
+                            <option value="">Nivel</option><template x-for="n in nivelesList" :key="n">
+                                <option :value="n" x-text="n"></option>
+                            </template>
+                        </select>
+                        <svg class="filter-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div style="position:relative;">
+                        <select x-model="filterJornadas" class="filter-select facet-select" style="width:155px;">
+                            <option value="">Jornada</option><template x-for="j in jornadasList" :key="j">
+                                <option :value="j" x-text="j"></option>
+                            </template>
+                        </select>
+                        <svg class="filter-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div style="position:relative;">
+                        <select x-model="filterCaracter" class="filter-select facet-select" style="width:155px;">
+                            <option value="">Carácter</option><template x-for="c in caracterList" :key="c">
+                                <option :value="c" x-text="c"></option>
+                            </template>
+                        </select>
+                        <svg class="filter-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+
+                    <!-- Modelo (Multi) -->
+                    <div x-data="{ open: false }" @click.away="open = false" style="position:relative;">
+                        <button @click="open = !open" class="facet-select" style="width:155px;">
+                            <span x-text="filterModelo.length > 0 ? filterModelo.length + ' Mod.' : 'Modelo'"
+                                style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+                            <svg :style="open ? 'transform:rotate(180deg)' : ''" class="filter-arrow-icon" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition
+                            style="position:absolute; top:110%; left:0; width:200px; max-height:250px; overflow-y:auto; background:white; border:1px solid #cbd5e1; border-radius:8px; z-index:10002; padding:10px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);">
+                            <div
+                                style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:8px; position:sticky; top:0; background:white;">
+                                <div style="display:flex; gap:10px;">
+                                    <button @click="filterModelo = [...modeloList]"
+                                        style="font-size:0.6rem; color:var(--primary); font-weight:800; cursor:pointer; background:none; border:none;">TODOS</button>
+                                    <button @click="filterModelo = []"
+                                        style="font-size:0.6rem; color:#ef4444; font-weight:800; cursor:pointer; background:none; border:none;">LIMPIAR</button>
+                                </div>
+                                <button @click="open = false"
+                                    style="font-size:0.6rem; color:#64748b; font-weight:800; cursor:pointer; background:none; border:none;">OK</button>
+                            </div>
+                            <template x-for="m in modeloList" :key="m">
+                                <label
+                                    style="display:flex; align-items:center; gap:8px; font-size:0.7rem; padding:4px 0; cursor:pointer; font-weight:600;">
+                                    <input type="checkbox" :value="m" x-model="filterModelo"
+                                        style="accent-color:var(--primary);">
+                                    <span x-text="m"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Enfoque (Multi) -->
+                    <div x-data="{ open: false }" @click.away="open = false" style="position:relative;">
+                        <button @click="open = !open" class="facet-select" style="width:155px;">
+                            <span x-text="filterEnfoque.length > 0 ? filterEnfoque.length + ' Enf.' : 'Enfoque'"
+                                style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+                            <svg :style="open ? 'transform:rotate(180deg)' : ''" class="filter-arrow-icon" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition
+                            style="position:absolute; top:110%; left:0; width:200px; max-height:250px; overflow-y:auto; background:white; border:1px solid #cbd5e1; border-radius:8px; z-index:10002; padding:10px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);">
+                            <div
+                                style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:8px; position:sticky; top:0; background:white;">
+                                <div style="display:flex; gap:10px;">
+                                    <button @click="filterEnfoque = [...enfoqueList]"
+                                        style="font-size:0.6rem; color:var(--primary); font-weight:800; cursor:pointer; background:none; border:none;">TODOS</button>
+                                    <button @click="filterEnfoque = []"
+                                        style="font-size:0.6rem; color:#ef4444; font-weight:800; cursor:pointer; background:none; border:none;">LIMPIAR</button>
+                                </div>
+                                <button @click="open = false"
+                                    style="font-size:0.6rem; color:#64748b; font-weight:800; cursor:pointer; background:none; border:none;">OK</button>
+                            </div>
+                            <template x-for="e in enfoqueList" :key="e">
+                                <label
+                                    style="display:flex; align-items:center; gap:8px; font-size:0.7rem; padding:4px 0; cursor:pointer; font-weight:600;">
+                                    <input type="checkbox" :value="e" x-model="filterEnfoque"
+                                        style="accent-color:var(--primary);">
+                                    <span x-text="e"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Familia (Multi) -->
+                    <div x-data="{ open: false }" @click.away="open = false" style="position:relative;">
+                        <button @click="open = !open" class="facet-select" style="width:155px;">
+                            <span x-text="filterFamilia.length > 0 ? filterFamilia.length + ' Fam.' : 'Familia'"
+                                style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+                            <svg :style="open ? 'transform:rotate(180deg)' : ''" class="filter-arrow-icon" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition
+                            style="position:absolute; top:110%; left:0; width:200px; max-height:250px; overflow-y:auto; background:white; border:1px solid #cbd5e1; border-radius:8px; z-index:10002; padding:10px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);">
+                            <div
+                                style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:8px; position:sticky; top:0; background:white;">
+                                <div style="display:flex; gap:10px;">
+                                    <button @click="filterFamilia = [...familiaList]"
+                                        style="font-size:0.6rem; color:var(--primary); font-weight:800; cursor:pointer; background:none; border:none;">TODOS</button>
+                                    <button @click="filterFamilia = []"
+                                        style="font-size:0.6rem; color:#ef4444; font-weight:800; cursor:pointer; background:none; border:none;">LIMPIAR</button>
+                                </div>
+                                <button @click="open = false"
+                                    style="font-size:0.6rem; color:#64748b; font-weight:800; cursor:pointer; background:none; border:none;">OK</button>
+                            </div>
+                            <template x-for="f in familiaList" :key="f">
+                                <label
+                                    style="display:flex; align-items:center; gap:8px; font-size:0.7rem; padding:4px 0; cursor:pointer; font-weight:600;">
+                                    <input type="checkbox" :value="f" x-model="filterFamilia"
+                                        style="accent-color:var(--primary);">
+                                    <span x-text="f"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="stages-filters"
+                        style="margin-left:auto; border-left:1px solid #e2e8f0; padding-left:15px; display:flex; gap:10px; align-items:center;">
+                        <span
+                            style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Etapas:</span>
                         <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                            <label style="font-size:0.75rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:3px; cursor:pointer;">
-                                <input type="checkbox" :value="stage" x-model="filterStages" style="accent-color:var(--primary);"> 
+                            <label
+                                style="font-size:0.75rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:3px; cursor:pointer;">
+                                <input type="checkbox" :value="stage" x-model="filterStages"
+                                    style="accent-color:var(--primary);">
                                 <span x-text="stage.toUpperCase()"></span>
                             </label>
                         </template>
@@ -616,63 +889,94 @@
             </div>
             <!-- 2. TABLA DE RESULTADOS (OCULTABLE) -->
             <div class="table-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f1f5f9; padding-bottom:12px;">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f1f5f9; padding-bottom:12px;">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <h2 style="font-size:1.15rem; color:var(--primary); font-weight:800; margin:0;">Resultados por Institución</h2>
-                        <span style="font-size:0.7rem; color:#64748b; background:#f1f5f9; padding:2px 10px; border-radius:99px;" x-text="filteredIEDs.length + ' encontrados'"></span>
+                        <h2 style="font-size:1.15rem; color:var(--primary); font-weight:800; margin:0;">Resultados por
+                            Institución</h2>
+                        <span
+                            style="font-size:0.7rem; color:#64748b; background:#f1f5f9; padding:2px 10px; border-radius:99px;"
+                            x-text="filteredIEDs.length + ' encontrados'"></span>
                     </div>
-                    <button @click="tableVisible = !tableVisible" 
-                            style="padding:6px 14px; border-radius:6px; background:#fff; border:1px solid #cbd5e1; font-size:0.75rem; font-weight:700; cursor:pointer;"
-                            class="hover-card">
+                    <button @click="tableVisible = !tableVisible"
+                        style="padding:6px 14px; border-radius:6px; background:#fff; border:1px solid #cbd5e1; font-size:0.75rem; font-weight:700; cursor:pointer;"
+                        class="hover-card">
                         <span x-text="tableVisible ? 'Ocultar Tabla' : 'Mostrar Tabla'"></span>
                     </button>
                 </div>
 
-                <div x-show="tableVisible" style="overflow-x:auto; max-height:450px; overflow-y:auto; border-radius: 8px; border: 1px solid #f1f5f9; background:white;">
+                <div x-show="tableVisible"
+                    style="overflow-x:auto; max-height:450px; overflow-y:auto; border-radius: 8px; border: 1px solid #f1f5f9; background:white;">
                     <table>
                         <thead>
-                             <tr style="background:#f1f5f9; border-bottom:1px solid #e2e8f0;">
-                                 <th rowspan="2" style="border-right:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Institución</th>
-                                 <th rowspan="2" style="border-right:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Municipio</th>
-                                 <th colspan="7" style="text-align:center; background:#dcfce7; color:#166534; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid #bbf7d0; padding:4px;">Participación</th>
-                                 <th colspan="6" style="text-align:center; background:#e0f2fe; color:#0369a1; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid #bae6fd; padding:4px;">Avance Global</th>
-                                 <th :colspan="['e1','e2','e3','e4','e5','e6'].reduce((acc, st) => acc + getGlobalCriteriaKeys(st).length, 0)" 
-                                     style="text-align:center; background:#fef3c7; color:#92400e; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; padding:4px;">Detalle Criterios</th>
-                                 <th rowspan="2" style="text-align:center; border-left:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Acción</th>
-                             </tr>
-                             <tr style="background:#f8fafc;">
-                                 <th @click="toggleSort('participantes')" style="cursor:pointer; user-select:none; font-size:0.65rem; color:var(--primary); font-weight:800; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">Total</th>
-                                 <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                                     <th @click="toggleSort('part_' + stage)" style="cursor:pointer; user-select:none; font-size:0.6rem; min-width:35px; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">
-                                         <div x-text="stage.toUpperCase()" style="color:#059669; font-weight:800;"></div>
-                                     </th>
-                                 </template>
-                                 <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                                     <th @click="toggleSort('avance_' + stage)" style="cursor:pointer; user-select:none; font-size:0.6rem; min-width:40px; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">
-                                         <div x-text="stage.toUpperCase()" style="color:#0284c7; font-weight:800;"></div>
-                                     </th>
-                                 </template>
-                                 <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                                     <template x-for="ckey in getGlobalCriteriaKeys(stage)">
-                                         <th @click="toggleSort('crit|' + stage + '|' + ckey)" style="cursor:pointer; user-select:none; font-size:0.5rem; min-width:30px; border-right:1px solid #fef3c766; text-align:center; padding:6px 2px;">
-                                             <div x-text="stage.toUpperCase()" style="color:#b45309; font-weight:800;"></div>
-                                             <div x-text="ckey.replace('criterio_','C')" style="color:#d97706; font-weight:400;"></div>
-                                         </th>
-                                     </template>
-                                 </template>
-                             </tr>
+                            <tr style="background:#f1f5f9; border-bottom:1px solid #e2e8f0;">
+                                <th rowspan="2"
+                                    style="border-right:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">
+                                    Institución</th>
+                                <th rowspan="2"
+                                    style="border-right:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">
+                                    Municipio</th>
+                                <th colspan="7"
+                                    style="text-align:center; background:#dcfce7; color:#166534; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid #bbf7d0; padding:4px;">
+                                    Participación</th>
+                                <th colspan="6"
+                                    style="text-align:center; background:#e0f2fe; color:#0369a1; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid #bae6fd; padding:4px;">
+                                    Avance Global</th>
+                                <th :colspan="['e1','e2','e3','e4','e5','e6'].reduce((acc, st) => acc + getGlobalCriteriaKeys(st).length, 0)"
+                                    style="text-align:center; background:#fef3c7; color:#92400e; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; padding:4px;">
+                                    Detalle Criterios</th>
+                                <th rowspan="2"
+                                    style="text-align:center; border-left:1px solid #e2e8f0; padding:12px 16px; color:#475569; font-weight:800; font-size:0.8rem; text-transform:uppercase;">
+                                    Acción</th>
+                            </tr>
+                            <tr style="background:#f8fafc;">
+                                <th @click="toggleSort('participantes')"
+                                    style="cursor:pointer; user-select:none; font-size:0.65rem; color:var(--primary); font-weight:800; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">
+                                    Total</th>
+                                <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
+                                    <th @click="toggleSort('part_' + stage)"
+                                        style="cursor:pointer; user-select:none; font-size:0.6rem; min-width:35px; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">
+                                        <div x-text="stage.toUpperCase()" style="color:#059669; font-weight:800;"></div>
+                                    </th>
+                                </template>
+                                <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
+                                    <th @click="toggleSort('avance_' + stage)"
+                                        style="cursor:pointer; user-select:none; font-size:0.6rem; min-width:40px; border-right:1px solid #f1f5f9; text-align:center; padding:6px 2px;">
+                                        <div x-text="stage.toUpperCase()" style="color:#0284c7; font-weight:800;"></div>
+                                    </th>
+                                </template>
+                                <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
+                                    <template x-for="ckey in getGlobalCriteriaKeys(stage)">
+                                        <th @click="toggleSort('crit|' + stage + '|' + ckey)"
+                                            style="cursor:pointer; user-select:none; font-size:0.5rem; min-width:30px; border-right:1px solid #fef3c766; text-align:center; padding:6px 2px;">
+                                            <div x-text="stage.toUpperCase()" style="color:#b45309; font-weight:800;">
+                                            </div>
+                                            <div x-text="ckey.replace('criterio_','C')"
+                                                style="color:#d97706; font-weight:400;"></div>
+                                        </th>
+                                    </template>
+                                </template>
+                            </tr>
                         </thead>
                         <tbody>
                             <template x-for="ied in sortedIEDs" :key="ied.id">
                                 <tr>
-                                    <td x-text="ied.nombre_oficial || ied.institucion" style="font-size:0.8rem; font-weight:600;"></td>
+                                    <td x-text="ied.nombre_oficial || ied.institucion"
+                                        style="font-size:0.8rem; font-weight:600;"></td>
                                     <td x-text="ied.municipio_oficial || ied.municipio" style="font-size:0.8rem;"></td>
-                                    <td x-text="getTotalParticipantes(ied)" style="text-align:center; font-weight:700; color:var(--primary); font-size:0.8rem;"></td>
+                                    <td x-text="getTotalParticipantes(ied)"
+                                        style="text-align:center; font-weight:700; color:var(--primary); font-size:0.8rem;">
+                                    </td>
                                     <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                                        <td x-text="ied.participantes?.[stage] || 0" style="text-align:center; font-size:0.75rem; color:#64748b; border-left:1px solid #f8fafc;"></td>
+                                        <td x-text="ied.participantes?.[stage] || 0"
+                                            style="text-align:center; font-size:0.75rem; color:#64748b; border-left:1px solid #f8fafc;">
+                                        </td>
                                     </template>
                                     <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
-                                        <td x-text="fmtAvance(ied, stage)" style="font-size:0.75rem; text-align:center; font-weight:700;" :style="{ color: ied.avances?.[stage] > 0 ? 'var(--primary)' : '#94a3b8' }"></td>
+                                        <td x-text="fmtAvance(ied, stage)"
+                                            style="font-size:0.75rem; text-align:center; font-weight:700;"
+                                            :style="{ color: ied.avances?.[stage] > 0 ? 'var(--primary)' : '#94a3b8' }">
+                                        </td>
                                     </template>
                                     <!-- Datapoints per criterion -->
                                     <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
@@ -682,7 +986,8 @@
                                                 x-text="fmtNumOrStr(ied.criterios?.[stage]?.[ckey])"></td>
                                         </template>
                                     </template>
-                                    <td><button class="btn-view" @click="selectIED(ied)" style="padding:4px 8px; font-size:0.7rem;">Perfil</button></td>
+                                    <td><button class="btn-view" @click="selectIED(ied)"
+                                            style="padding:4px 8px; font-size:0.7rem;">Perfil</button></td>
                                 </tr>
                             </template>
                         </tbody>
@@ -706,115 +1011,160 @@
                 </div>
             </div>
 
-                <!-- ── SECCIÓN DE ANÁLISIS AGREGADO ── -->
-                <div class="distribution-section"
-                    style="margin-top: 30px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; grid-column: span 12; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:2px solid #f1f5f9; padding-bottom:15px;">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div style="background:var(--primary); color:white; width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
-                                <svg style="width:20px; height:20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 style="font-size:1.1rem; color:#0f172a; margin:0; font-weight:700;">Análisis en Conjunto: Distribución de Desempeño</h3>
-                                <p style="font-size:0.8rem; color:#64748b; margin:0;">Visualización agregada de todas las instituciones según los filtros actuales</p>
+            <!-- ── SECCIÓN DE ANÁLISIS AGREGADO ── -->
+            <div class="distribution-section"
+                style="margin-top: 30px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; grid-column: span 12; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:2px solid #f1f5f9; padding-bottom:15px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div
+                            style="background:var(--primary); color:white; width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                            <svg style="width:20px; height:20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size:1.1rem; color:#0f172a; margin:0; font-weight:700;">Análisis en
+                                Conjunto: Distribución de Desempeño</h3>
+                            <p style="font-size:0.8rem; color:#64748b; margin:0;">Visualización agregada de todas las
+                                instituciones según los filtros actuales</p>
+                        </div>
+                    </div>
+                    <span
+                        style="font-size:0.75rem; color:#1e293b; font-weight:700; background:#f1f5f9; padding:6px 14px; border-radius:99px; border:1px solid #e2e8f0;"
+                        x-text="filteredIEDs.length + ' Instituciones Analizadas'"></span>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:40px;">
+
+                    <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL ── -->
+                    <div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                            <h4
+                                style="font-size:0.9rem; font-weight:800; color:var(--primary); margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                Contexto y Avance Global</h4>
+                            <div
+                                style="flex:1; height:2px; background:linear-gradient(to right, var(--primary-light), transparent); opacity:0.3;">
                             </div>
                         </div>
-                        <span style="font-size:0.75rem; color:#1e293b; font-weight:700; background:#f1f5f9; padding:6px 14px; border-radius:99px; border:1px solid #e2e8f0;"
-                              x-text="filteredIEDs.length + ' Instituciones Analizadas'"></span>
-                    </div>
 
-                    <div style="display:flex; flex-direction:column; gap:40px;">
-                        
-                        <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL ── -->
-                        <div>
-                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                                <h4 style="font-size:0.9rem; font-weight:800; color:var(--primary); margin:0; text-transform:uppercase; letter-spacing:0.05em;">Contexto y Avance Global</h4>
-                                <div style="flex:1; height:2px; background:linear-gradient(to right, var(--primary-light), transparent); opacity:0.3;"></div>
-                            </div>
-
-                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
-                                <!-- Gráficos Categorizados (Bar Charts) -->
-                                <template x-for="field in [{id:'municipio', label:'Municipio'}, {id:'zona', label:'Zona'}, {id:'caracter', label:'Carácter'}, {id:'modelo_clasificado', label:'Modelo'}, {id:'enfoque_clasificado', label:'Enfoque'}, {id:'familia_pedagogica', label:'Familia'}]">
-                                    <div style="background:#fff; padding:18px; border-radius:12px; border:1px solid #e2e8f0; max-height:220px; overflow-y:auto;" class="hover-card">
-                                        <h5 style="font-size:0.75rem; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;" x-text="field.label"></h5>
-                                        <div style="display:flex; flex-direction:column; gap:8px;">
-                                            <template x-for="item in getGlobalCategoricalCounts(field.id).slice(0,8)">
-                                                <div>
-                                                    <div style="display:flex; justify-content:space-between; font-size:0.65rem; font-weight:600; margin-bottom:3px;">
-                                                        <span x-text="item.label" style="color:#1e293b; max-width:70%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
-                                                        <span style="color:var(--primary);" x-text="item.count + ' (' + item.totalPct + '%)'"></span>
-                                                    </div>
-                                                    <div style="height:6px; background:#f1f5f9; border-radius:10px; overflow:hidden; margin-top:2px;">
-                                                        <div :style="{ width: Math.max(item.pct, 0) + '%' }" 
-                                                             style="height:100%; border-radius:10px; background-color:#3b82f6; background:var(--primary); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                        <div
+                            style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
+                            <!-- Gráficos Categorizados (Bar Charts) -->
+                            <template
+                                x-for="field in [{id:'municipio', label:'Municipio'}, {id:'zona', label:'Zona'}, {id:'caracter', label:'Carácter'}, {id:'modelo_clasificado', label:'Modelo'}, {id:'enfoque_clasificado', label:'Enfoque'}, {id:'familia_pedagogica', label:'Familia'}]">
+                                <div style="background:#fff; padding:18px; border-radius:12px; border:1px solid #e2e8f0; max-height:220px; overflow-y:auto;"
+                                    class="hover-card">
+                                    <h5 style="font-size:0.75rem; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;"
+                                        x-text="field.label"></h5>
+                                    <div style="display:flex; flex-direction:column; gap:8px;">
+                                        <template x-for="item in getGlobalCategoricalCounts(field.id).slice(0,8)">
+                                            <div>
+                                                <div
+                                                    style="display:flex; justify-content:space-between; font-size:0.65rem; font-weight:600; margin-bottom:3px;">
+                                                    <span x-text="item.label"
+                                                        style="color:#1e293b; max-width:70%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+                                                    <span style="color:var(--primary);"
+                                                        x-text="item.count + ' (' + item.totalPct + '%)'"></span>
+                                                </div>
+                                                <div
+                                                    style="height:6px; background:#f1f5f9; border-radius:10px; overflow:hidden; margin-top:2px;">
+                                                    <div :style="{ width: Math.max(item.pct, 0) + '%' }"
+                                                        style="height:100%; border-radius:10px; background-color:#3b82f6; background:var(--primary); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
                                                     </div>
                                                 </div>
-                                            </template>
-                                        </div>
-                                    </div>
-                                </template>
-
-                                <div style="background:#fff; padding:18px; border-radius:12px; border:1px solid #e2e8f0; height:220px; overflow-y:hidden; flex:1; min-width:320px; display:flex; flex-direction:column;" class="hover-card">
-                                    <h5 style="font-size:0.75rem; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;">Participantes Totales (Densidad)</h5>
-                                    <div style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:12px 4px 4px 4px; background:#f8fafc; border-radius:8px;">
-                                        <template x-for="bin in getTotalParticipantesDistribution()">
-                                            <div :style="`flex:1; background:#10b981; height:${Math.max(bin.height, 2)}%; opacity:0.8;`" 
-                                                 style="border-radius:2px 2px 0 0;"
-                                                 :title="`${bin.count} instituciones con ${bin.rangeStart} - ${bin.rangeEnd} participantes totales`"></div>
+                                            </div>
                                         </template>
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.5rem; color:#94a3b8; font-weight:700;">
-                                        <span>MIN</span>
-                                        <span>MAX</span>
-                                    </div>
+                                </div>
+                            </template>
+
+                            <div style="background:#fff; padding:18px; border-radius:12px; border:1px solid #e2e8f0; height:220px; overflow-y:hidden; flex:1; min-width:320px; display:flex; flex-direction:column;"
+                                class="hover-card">
+                                <h5
+                                    style="font-size:0.75rem; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;">
+                                    Participantes Totales (Densidad)</h5>
+                                <div
+                                    style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:12px 4px 4px 4px; background:#f8fafc; border-radius:8px;">
+                                    <template x-for="bin in getTotalParticipantesDistribution()">
+                                        <div :style="`flex:1; background:#10b981; height:${Math.max(bin.height, 2)}%; opacity:0.8;`"
+                                            style="border-radius:2px 2px 0 0;"
+                                            :title="`${bin.count} instituciones con ${bin.rangeStart} - ${bin.rangeEnd} participantes totales`">
+                                        </div>
+                                    </template>
+                                </div>
+                                <div
+                                    style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.5rem; color:#94a3b8; font-weight:700;">
+                                    <span>MIN</span>
+                                    <span>MAX</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- ── SUBSECCIÓN: DESEMPEÑO POR CRITERIO ── -->
-                        <div>
-                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                                <h4 style="font-size:0.9rem; font-weight:800; color:var(--primary); margin:0; text-transform:uppercase; letter-spacing:0.05em;">Desempeño Específico por Etapa</h4>
-                                <div style="flex:1; height:2px; background:linear-gradient(to right, var(--primary-light), transparent); opacity:0.3;"></div>
+                    <!-- ── SUBSECCIÓN: DESEMPEÑO POR CRITERIO ── -->
+                    <div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                            <h4
+                                style="font-size:0.9rem; font-weight:800; color:var(--primary); margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                Desempeño Específico por Etapa</h4>
+                            <div
+                                style="flex:1; height:2px; background:linear-gradient(to right, var(--primary-light), transparent); opacity:0.3;">
                             </div>
+                        </div>
                         <template x-for="stage in ['e1','e2','e3','e4','e5','e6']">
                             <div x-show="getGlobalCriteriaKeys(stage).length > 0">
-                                <div style="display:flex; align-items:center; gap:15px; margin-bottom:22px; background:#f8fafc; padding:10px 18px; border-radius:10px; border:1px solid #edf2f7;">
-                                    <span style="font-size:0.65rem; font-weight:900; color:white; background:var(--primary); padding:4px 10px; border-radius:4px; text-transform:uppercase; letter-spacing:0.1em;" x-text="stage"></span>
-                                    <span style="font-size:1.05rem; font-weight:800; color:#1e293b; text-transform: capitalize;" x-text="getStageName(stage)"></span>
+                                <div
+                                    style="display:flex; align-items:center; gap:15px; margin-bottom:22px; background:#f8fafc; padding:10px 18px; border-radius:10px; border:1px solid #edf2f7;">
+                                    <span
+                                        style="font-size:0.65rem; font-weight:900; color:white; background:var(--primary); padding:4px 10px; border-radius:4px; text-transform:uppercase; letter-spacing:0.1em;"
+                                        x-text="stage"></span>
+                                    <span
+                                        style="font-size:1.05rem; font-weight:800; color:#1e293b; text-transform: capitalize;"
+                                        x-text="getStageName(stage)"></span>
                                     <div style="flex:1;"></div>
                                     <!-- Global Advance Histogram in Header -->
                                     <div style="display:flex; align-items:center; gap:25px;">
                                         <div style="display:flex; align-items:center; gap:12px;">
                                             <div style="text-align:right;">
-                                                <div style="font-size:0.55rem; font-weight:800; color:#64748b; text-transform:uppercase;">Avance Global</div>
+                                                <div
+                                                    style="font-size:0.55rem; font-weight:800; color:#64748b; text-transform:uppercase;">
+                                                    Avance Global</div>
                                                 <div style="font-size:0.5rem; color:#94a3b8;">Histograma (0-100%)</div>
                                             </div>
-                                            <div style="height:32px; width:100px; display:flex; align-items:flex-end; gap:1px; background:#fff; border:1px solid #e2e8f0; border-radius:4px; padding:2px;">
+                                            <div
+                                                style="height:32px; width:100px; display:flex; align-items:flex-end; gap:1px; background:#fff; border:1px solid #e2e8f0; border-radius:4px; padding:2px;">
                                                 <template x-for="bin in getGlobalAvanceDistribution(stage)">
-                                                    <div :style="`flex:1; background:var(--primary); height:${Math.max(bin.height, 2)}%; opacity:0.8;`" 
-                                                         style="border-radius:1px;"
-                                                         :title="`${bin.count} instituciones entre ${bin.rangeStart}% y ${bin.rangeEnd}%`"
-                                                    ></div>
+                                                    <div :style="`flex:1; background:var(--primary); height:${Math.max(bin.height, 2)}%; opacity:0.8;`"
+                                                        style="border-radius:1px;"
+                                                        :title="`${bin.count} instituciones entre ${bin.rangeStart}% y ${bin.rangeEnd}%`">
+                                                    </div>
                                                 </template>
                                             </div>
                                         </div>
 
                                         <!-- Estadísticas (SD, Q) -->
-                                        <div style="display:flex; gap:12px; padding-left:15px; border-left:1px dashed #cbd5e1; align-items:center;">
+                                        <div
+                                            style="display:flex; gap:12px; padding-left:15px; border-left:1px dashed #cbd5e1; align-items:center;">
                                             <template x-if="getGlobalStats(stage)">
                                                 <div style="display:flex; gap:15px;">
                                                     <div style="text-align:center;">
-                                                        <div style="font-size:0.75rem; color:#94a3b8; font-weight:800; margin-bottom:1px;">DE</div>
-                                                        <div style="font-size:0.75rem; font-weight:800; color:#475569;" x-text="fmtNumOrStr(getGlobalStats(stage).sd)"></div>
+                                                        <div
+                                                            style="font-size:0.75rem; color:#94a3b8; font-weight:800; margin-bottom:1px;">
+                                                            DE</div>
+                                                        <div style="font-size:0.75rem; font-weight:800; color:#475569;"
+                                                            x-text="fmtNumOrStr(getGlobalStats(stage).sd)"></div>
                                                     </div>
                                                     <div style="text-align:center;">
-                                                        <div style="font-size:0.75rem; color:#94a3b8; font-weight:800; margin-bottom:1px;">Q1 | Q2 | Q3</div>
+                                                        <div
+                                                            style="font-size:0.75rem; color:#94a3b8; font-weight:800; margin-bottom:1px;">
+                                                            Q1 | Q2 | Q3</div>
                                                         <div style="font-size:0.75rem; font-weight:700; color:#1e293b;">
-                                                            <span x-text="fmtNumOrStr(getGlobalStats(stage).q1)"></span> |
-                                                            <span x-text="fmtNumOrStr(getGlobalStats(stage).q2)" style="color:var(--primary);"></span> |
+                                                            <span x-text="fmtNumOrStr(getGlobalStats(stage).q1)"></span>
+                                                            |
+                                                            <span x-text="fmtNumOrStr(getGlobalStats(stage).q2)"
+                                                                style="color:var(--primary);"></span> |
                                                             <span x-text="fmtNumOrStr(getGlobalStats(stage).q3)"></span>
                                                         </div>
                                                     </div>
@@ -825,68 +1175,139 @@
                                 </div>
                                 <div class="criteria-grid">
                                     <!-- Tarjeta Especial: Distribución de Participantes -->
-                                    <div style="padding:16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;" class="hover-card">
-                                        <div style="font-size:0.75rem; font-weight:800; color:#166534; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between;">
+                                    <div style="padding:16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;"
+                                        class="hover-card">
+                                        <div
+                                            style="font-size:0.75rem; font-weight:800; color:#166534; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between;">
                                             <span>Participación en esta Etapa</span>
-                                            <span style="font-size:0.6rem; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:99px;">Densidad</span>
+                                            <span
+                                                style="font-size:0.6rem; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:99px;">Densidad</span>
                                         </div>
-                                        <div style="display:flex; align-items:flex-end; gap:2px; height:60px; padding:4px; background:white; border-radius:8px; border:1px solid #dcfce7;">
+                                        <div
+                                            style="display:flex; align-items:flex-end; gap:2px; height:60px; padding:4px; background:white; border-radius:8px; border:1px solid #dcfce7;">
                                             <template x-for="bin in getGlobalParticipantesDistribution(stage)">
-                                                <div :style="`flex:1; background:#10b981; height:${Math.max(bin.height, 2)}%; opacity:0.8;`" 
-                                                     style="border-radius:2px 2px 0 0;"
-                                                     :title="`${bin.count} instituciones con ${bin.rangeStart} - ${bin.rangeEnd} participantes`"></div>
+                                                <div :style="`flex:1; background:#10b981; height:${Math.max(bin.height, 2)}%; opacity:0.8;`"
+                                                    style="border-radius:2px 2px 0 0;"
+                                                    :title="`${bin.count} instituciones con ${bin.rangeStart} - ${bin.rangeEnd} participantes`">
+                                                </div>
                                             </template>
                                         </div>
-                                        <div style="margin-top:12px; font-size:0.65rem; color:#15803d; line-height:1.4;">
-                                            Distribución de las instituciones seleccionadas según su volumen de participantes en la Etapa <span x-text="stage.toUpperCase()"></span>.
+                                        <div
+                                            style="margin-top:12px; font-size:0.65rem; color:#15803d; line-height:1.4;">
+                                            Distribución de las instituciones seleccionadas según su volumen de
+                                            participantes en la Etapa <span x-text="stage.toUpperCase()"></span>.
                                         </div>
                                     </div>
 
                                     <template x-for="ckey in getGlobalCriteriaKeys(stage)">
                                         <div style="padding:16px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; transition:all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
-                                             class="hover-card">
-                                            <div style="font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                                            class="hover-card">
+                                            <div
+                                                style="font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
                                                 <span x-text="formatCriterioLabel(ckey)" style="flex:1;"></span>
                                                 <div style="text-align:right;">
-                                                    <span style="display:block; color:var(--primary); font-size:0.8rem; font-weight:800;" x-text="fmtNumOrStr(getGlobalAverage(stage, ckey))"></span>
-                                                    <span style="font-size:0.5rem; color:#94a3b8; font-weight:600;">PROMEDIO</span>
+                                                    <span
+                                                        style="display:block; color:var(--primary); font-size:0.8rem; font-weight:800;"
+                                                        x-text="fmtNumOrStr(getGlobalAverage(stage, ckey))"></span>
+                                                    <span
+                                                        style="font-size:0.5rem; color:#94a3b8; font-weight:600;">PROMEDIO</span>
                                                 </div>
                                             </div>
 
                                             <!-- Stats Row Summary -->
                                             <template x-if="getGlobalStats(stage, ckey)">
-                                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8fafc; padding:4px 10px; border-radius:6px; border:1px solid #f1f5f9;">
+                                                <div
+                                                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8fafc; padding:4px 10px; border-radius:6px; border:1px solid #f1f5f9;">
                                                     <div>
-                                                        <span style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:4px;">DE:</span>
-                                                        <span style="font-size:0.7rem; font-weight:700; color:#475569;" x-text="fmtNumOrStr(getGlobalStats(stage, ckey).sd)"></span>
+                                                        <span
+                                                            style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:4px;">DE:</span>
+                                                        <span style="font-size:0.7rem; font-weight:700; color:#475569;"
+                                                            x-text="fmtNumOrStr(getGlobalStats(stage, ckey).sd)"></span>
                                                     </div>
                                                     <div style="font-size:0.7rem; font-weight:700; color:#64748b;">
-                                                        <span x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q1)"></span> |
-                                                        <span x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q2)" style="color:var(--primary);"></span> |
-                                                        <span x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q3)"></span>
+                                                        <span
+                                                            x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q1)"></span>
+                                                        |
+                                                        <span x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q2)"
+                                                            style="color:var(--primary);"></span> |
+                                                        <span
+                                                            x-text="fmtNumOrStr(getGlobalStats(stage, ckey).q3)"></span>
                                                     </div>
                                                 </div>
                                             </template>
 
                                             <!-- Chart Container -->
                                             <div style="position:relative; margin-top:10px;">
-                                                <div style="display:flex; align-items:flex-end; gap:3px; height:50px; padding:0 2px;">
-                                                     <template x-for="h in getGlobalDistribution(stage, ckey)">
-                                                         <div :style="`flex:1; background:#cbd5e1; height:${Math.max(h.height, 3)}%; opacity:${h.height > 0 ? 1 : 0.4}`" 
-                                                              style="border-radius:2px 2px 0 0; min-width:6px; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;"
-                                                              @mouseenter="$el.style.background = 'var(--primary)'"
-                                                              @mouseleave="$el.style.background = '#cbd5e1'" :title="`${h.count} instituciones (${h.range})`"
-                                                         ></div>
-                                                     </template>
+                                                <div
+                                                    style="display:flex; align-items:flex-end; gap:3px; height:50px; padding:0 2px;">
+                                                    <template x-for="h in getGlobalDistribution(stage, ckey)">
+                                                        <div :style="`flex:1; background:#cbd5e1; height:${Math.max(h.height, 3)}%; opacity:${h.height > 0 ? 1 : 0.4}`"
+                                                            style="border-radius:2px 2px 0 0; min-width:6px; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;"
+                                                            @mouseenter="$el.style.background = 'var(--primary)'"
+                                                            @mouseleave="$el.style.background = '#cbd5e1'"
+                                                            :title="`${h.count} instituciones (${h.range})`"></div>
+                                                    </template>
                                                 </div>
                                                 <!-- Labels for chart range (0 to 100%) -->
-                                                <div style="display:flex; justify-content:space-between; margin-top:6px; border-top:1px solid #f1f5f9; padding-top:4px;">
-                                                    <span style="font-size:0.55rem; color:#94a3b8; font-weight:600;">0%</span>
-                                                    <span style="font-size:0.55rem; color:#94a3b8; font-weight:600;">100%</span>
+                                                <div
+                                                    style="display:flex; justify-content:space-between; margin-top:6px; border-top:1px solid #f1f5f9; padding-top:4px;">
+                                                    <span
+                                                        style="font-size:0.55rem; color:#94a3b8; font-weight:600;">0%</span>
+                                                    <span
+                                                        style="font-size:0.55rem; color:#94a3b8; font-weight:600;">100%</span>
                                                 </div>
                                             </div>
-                                            <div style="margin-top:12px; font-size:0.65rem; color:#64748b; line-height:1.4; border-top:1px dashed #f1f5f9; padding-top:8px;" 
-                                                 x-text="getCriterioDefinicion(stage, ckey)"></div>
+                                            <div style="margin-top:12px; font-size:0.65rem; color:#64748b; line-height:1.4; border-top:1px dashed #f1f5f9; padding-top:8px;"
+                                                x-text="getCriterioDefinicion(stage, ckey)"></div>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <!-- ── Análisis Cualitativo Agregado ── -->
+                                <div
+                                    style="margin-top: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                                    <template x-for="qType in [
+                                        {id:'Logros', label:'Logros Destacados', color:'#10b981', bg:'#f0fdf4', border:'#bbf7d0'},
+                                        {id:'Retos', label:'Principales Retos', color:'#f43f5e', bg:'#fff1f2', border:'#fecdd3'},
+                                        {id:'Sugerencias', label:'Sugerencias y Recomendaciones', color:'#3b82f6', bg:'#eff6ff', border:'#bfdbfe'}
+                                    ]">
+                                        <div :style="`background:${qType.bg}; border:1px solid ${qType.border}; border-radius:12px; padding:18px;`"
+                                            class="hover-card">
+                                            <div
+                                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                                                <h5 style="font-size:0.75rem; font-weight:800; color:#1e293b; margin:0; text-transform:uppercase; letter-spacing:0.025em;"
+                                                    x-text="qType.label"></h5>
+                                                <span
+                                                    style="font-size:0.6rem; font-weight:700; color:#64748b; background:rgba(255,255,255,0.7); padding:2px 8px; border-radius:4px; border:1px solid rgba(0,0,0,0.05);">IA
+                                                    Normalizado</span>
+                                            </div>
+
+                                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                                <template
+                                                    x-for="item in getQualitativeDistribution(stage, qType.id, qType.color)">
+                                                    <div>
+                                                        <div
+                                                            style="display:flex; justify-content:space-between; font-size:0.65rem; font-weight:700; margin-bottom:4px;">
+                                                            <span x-text="item.label"
+                                                                style="color:#334155; flex:1; padding-right:10px;"></span>
+                                                            <span :style="`color:${qType.color};`"
+                                                                x-text="item.count + ' (' + item.totalPct + '%)'"></span>
+                                                        </div>
+                                                        <div
+                                                            style="height:8px; background:#e2e8f0; border-radius:10px; overflow:hidden; margin-top:2px;">
+                                                            <div :style="item.barStyle"
+                                                                style="transition: width 1000ms ease-in-out;"></div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template
+                                                    x-if="getQualitativeDistribution(stage, qType.id, qType.color).length === 0">
+                                                    <div
+                                                        style="font-size:0.65rem; color:#94a3b8; font-style:italic; padding:10px 0;">
+                                                        No se encontró información cualitativa suficiente para esta
+                                                        etapa.</div>
+                                                </template>
+                                            </div>
                                         </div>
                                     </template>
                                 </div>
@@ -898,7 +1319,12 @@
         </main>
 
         <!-- Sidebar fijo a la derecha -->
-        <div class="dashboard-sidebar" x-show="!sidebarHidden" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-4" x-transition:enter-end="opacity-100 transform translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-x-0" x-transition:leave-end="opacity-0 transform translate-x-4">
+        <div class="dashboard-sidebar" x-show="!sidebarHidden" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform translate-x-4"
+            x-transition:enter-end="opacity-100 transform translate-x-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 transform translate-x-0"
+            x-transition:leave-end="opacity-0 transform translate-x-4">
             <template x-if="!selectedIED">
                 <div
                     style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#94a3b8; padding:40px; text-align:center;">
@@ -1887,34 +2313,75 @@
                                     </template>
 
                                     <!-- ── Cualitativo: logros, retos, sugerencias ── -->
-                                    <div class="qual-section">
-                                        <div x-show="selectedIED.detalles[s]?.logros">
-                                            <span class="qual-label qual-logros">Logros:</span>
-                                            <span x-text="selectedIED.detalles[s]?.logros"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.logros_ciclo_1" style="margin-top:4px;">
-                                            <span class="qual-label qual-logros">Logros C1:</span>
-                                            <span x-text="selectedIED.detalles[s]?.logros_ciclo_1"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.logros_ciclo_2" style="margin-top:4px;">
-                                            <span class="qual-label qual-logros">Logros C2:</span>
-                                            <span x-text="selectedIED.detalles[s]?.logros_ciclo_2"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.retos" style="margin-top:6px;">
-                                            <span class="qual-label qual-retos">Retos:</span>
-                                            <span x-text="selectedIED.detalles[s]?.retos"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.retos_ciclo_1" style="margin-top:4px;">
-                                            <span class="qual-label qual-retos">Retos C1:</span>
-                                            <span x-text="selectedIED.detalles[s]?.retos_ciclo_1"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.retos_ciclo_2" style="margin-top:4px;">
-                                            <span class="qual-label qual-retos">Retos C2:</span>
-                                            <span x-text="selectedIED.detalles[s]?.retos_ciclo_2"></span>
-                                        </div>
-                                        <div x-show="selectedIED.detalles[s]?.sugerencias" style="margin-top:6px;">
-                                            <span class="qual-label qual-suger">Sugerencias:</span>
-                                            <span x-text="selectedIED.detalles[s]?.sugerencias"></span>
+                                    <div class="qual-section" x-data="{ showDetailedText: false }">
+                                        
+                                        <!-- Categorized Lists (Top 5 items) -->
+                                        <template x-for="typeObj in [
+                                            { id: 'Logros', label: 'Logros Institucionales', class: 'logros', icon: 'M5 13l4 4L19 7' },
+                                            { id: 'Retos', label: 'Retos Identificados', class: 'retos', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' },
+                                            { id: 'Sugerencias', label: 'Sugerencias para la Etapa', class: 'sugerencias', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.989-2.386l-.548-.547z' }
+                                        ]">
+                                            <div x-show="getInstitutionalQualitativeCategories(s, typeObj.id).length > 0 && !(s === 'e1' && typeObj.id === 'Sugerencias')" style="margin-bottom: 12px;">
+                                                <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;"
+                                                     :style="'color:' + (typeObj.id === 'Logros' ? '#10b981' : typeObj.id === 'Retos' ? '#f43f5e' : '#3b82f6')">
+                                                    <svg style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" :d="typeObj.icon" />
+                                                    </svg>
+                                                    <span x-text="typeObj.label"></span>
+                                                </div>
+                                                <div class="qual-item-list">
+                                                    <template x-for="catItem in getInstitutionalQualitativeCategories(s, typeObj.id)">
+                                                        <div class="qual-item" :class="typeObj.class">
+                                                            <div style="flex-shrink: 0; margin-top: 2px;">
+                                                                <div style="width: 4px; height: 4px; border-radius: 50%;" :style="'background: currentColor'"></div>
+                                                            </div>
+                                                            <span x-text="catItem"></span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Collapsible Original Descriptive Text -->
+                                        <div x-show="selectedIED.detalles[s]?.logros || selectedIED.detalles[s]?.retos || (s !== 'e1' && selectedIED.detalles[s]?.sugerencias)" 
+                                             class="collapsible-text">
+                                            <div class="collapsible-trigger" @click="showDetailedText = !showDetailedText">
+                                                <span>Descripción detallada</span>
+                                                <svg class="collapsible-icon" :class="showDetailedText ? 'open' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </div>
+                                            
+                                            <div x-show="showDetailedText" x-collapse style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px; font-style: italic; color: #64748b; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #f1f5f9;">
+                                                <div x-show="selectedIED.detalles[s]?.logros">
+                                                    <span class="qual-label qual-logros">Logros:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.logros"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.logros_ciclo_1">
+                                                    <span class="qual-label qual-logros">Logros C1:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.logros_ciclo_1"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.logros_ciclo_2">
+                                                    <span class="qual-label qual-logros">Logros C2:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.logros_ciclo_2"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.retos">
+                                                    <span class="qual-label qual-retos">Retos:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.retos"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.retos_ciclo_1">
+                                                    <span class="qual-label qual-retos">Retos C1:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.retos_ciclo_1"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.retos_ciclo_2">
+                                                    <span class="qual-label qual-retos">Retos C2:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.retos_ciclo_2"></span>
+                                                </div>
+                                                <div x-show="selectedIED.detalles[s]?.sugerencias && s !== 'e1'">
+                                                    <span class="qual-label qual-suger">Sugerencias:</span>
+                                                    <span x-text="selectedIED.detalles[s]?.sugerencias"></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1954,7 +2421,7 @@
                 return {
                     Math: Math,
                     search: '',
-                    filterMunicipio: '',
+                    filterMunicipio: [],
                     filterStages: [],
                     tableVisible: true, // Control de visibilidad de la tabla
                     // Nuevos filtros
@@ -1963,9 +2430,9 @@
                     filterJornadas: '',
                     filterEspecialidad: '',
                     filterCaracter: '',
-                    filterModelo: '',
-                    filterEnfoque: '',
-                    filterFamilia: '',
+                    filterModelo: [],
+                    filterEnfoque: [],
+                    filterFamilia: [],
                     filterParticipantesMin: 0,
                     filterParticipantesMax: 1000,
                     maxParticipantes: 1000,
@@ -1995,6 +2462,7 @@
                     accionesE4Dictionary: {},
                     accionesE5Dictionary: {},
                     accionesE6Dictionary: {},
+                    qualitativeData: [],
 
                     init() {
                         const noCacheSuffix = '?t=' + new Date().getTime();
@@ -2111,6 +2579,16 @@
                                 }
                             }).catch(err => console.error("Error loading acciones E6 directament from Excel:", err));
 
+                        // Load qualitative data (Logros, Retos, Sugerencias)
+                        fetch('analysis/analisis_cualitativo_normalizado.csv' + noCacheSuffix)
+                            .then(res => res.text())
+                            .then(csv => {
+                                const workbook = XLSX.read(csv, { type: 'string' });
+                                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                                this.qualitativeData = XLSX.utils.sheet_to_json(sheet);
+                            })
+                            .catch(err => console.error("Error loading qualitative data:", err));
+
                         fetch('data/data_merged.json' + noCacheSuffix)
                             .then(res => res.json())
                             .then(data => {
@@ -2189,27 +2667,25 @@
 
                     applyFilters() {
                         const s = this.search.toLowerCase().trim();
-                        const mun = this.filterMunicipio;
                         const stages = this.filterStages || [];
-                        
-                        // Robust numeric parsing
                         const minPart = Number(this.filterParticipantesMin) || 0;
                         const maxPart = Number(this.filterParticipantesMax) || this.maxParticipantes;
 
                         this.filteredIEDs = this.allData.filter(i => {
-                            // Helper to check partial match reliably
                             const checkMatch = (val, filter) => {
-                                if (!filter || filter === "") return true;
+                                if (!filter || filter === "" || (Array.isArray(filter) && filter.length === 0)) return true;
                                 if (val === null || val === undefined) return false;
-                                return String(val).toLowerCase().includes(filter.toLowerCase());
+                                if (Array.isArray(filter)) {
+                                    return filter.some(f => String(val).toLowerCase() === String(f).toLowerCase());
+                                }
+                                return String(val).toLowerCase().includes(String(filter).toLowerCase());
                             };
 
-                            // Total participants with null/undefined safety
+                            // Total participants
                             let totalPart = 0;
                             if (i.participantes) {
                                 ['e1', 'e2', 'e3', 'e4', 'e5', 'e6'].forEach(st => {
-                                    const v = i.participantes[st];
-                                    if (v != null) totalPart += Number(v);
+                                    if (i.participantes[st] != null) totalPart += Number(i.participantes[st]);
                                 });
                             }
                             const matchParticipantes = totalPart >= minPart && totalPart <= maxPart;
@@ -2218,8 +2694,7 @@
                             const matchSearch = s ? (i.nombre_oficial || i.institucion || '').toLowerCase().includes(s) : true;
 
                             // 2. Filters
-                            const matchMun = (mun && mun !== "") ? (i.municipio_oficial || i.municipio) === mun : true;
-                            
+                            const matchMun = checkMatch((i.municipio_oficial || i.municipio), this.filterMunicipio);
                             const matchZona = checkMatch(i.perfil_institucional?.zona, this.filterZona);
                             const matchNiveles = checkMatch(i.perfil_institucional?.niveles, this.filterNiveles);
                             const matchJornadas = checkMatch(i.perfil_institucional?.jornadas || i.jornada, this.filterJornadas);
@@ -2228,7 +2703,7 @@
                             const matchEnfoque = checkMatch(i.enfoque_clasificado, this.filterEnfoque);
                             const matchFamilia = checkMatch(i.familia_pedagogica, this.filterFamilia);
 
-                            // 3. Stages logic
+                            // 3. Stages
                             let matchStages = true;
                             if (stages.length > 0) {
                                 matchStages = stages.every(st => i.etapas_cursadas && i.etapas_cursadas[st]);
@@ -2404,12 +2879,12 @@
                             if (v === 1) idx = binCount - 1;
                             if (idx >= 0 && idx < binCount) bins[idx]++;
                         });
-                        
+
                         const maxCount = Math.max(...bins) || 1;
                         return bins.map((count, i) => ({
                             height: (count / maxCount) * 100,
                             count: count,
-                            range: `${Math.round((i/binCount)*100)}% - ${Math.round(((i+1)/binCount)*100)}%`
+                            range: `${Math.round((i / binCount) * 100)}% - ${Math.round(((i + 1) / binCount) * 100)}%`
                         }));
                     },
 
@@ -2436,13 +2911,13 @@
                             if (v === 1) idx = binCount - 1;
                             if (idx >= 0 && idx < binCount) bins[idx]++;
                         });
-                        
+
                         const maxCount = Math.max(...bins) || 1;
                         return bins.map((count, i) => ({
                             height: (count / maxCount) * 100,
                             count: count,
-                            rangeStart: Math.round((i/binCount)*100),
-                            rangeEnd: Math.round(((i+1)/binCount)*100)
+                            rangeStart: Math.round((i / binCount) * 100),
+                            rangeEnd: Math.round(((i + 1) / binCount) * 100)
                         }));
                     },
 
@@ -2450,7 +2925,7 @@
                         try {
                             const counts = {};
                             if (!this.filteredIEDs || this.filteredIEDs.length === 0) return [];
-                            
+
                             this.filteredIEDs.forEach(ied => {
                                 let val = 'S/D';
                                 if (field === 'municipio') val = ied.municipio_oficial || ied.municipio;
@@ -2462,7 +2937,7 @@
                                 else val = ied[field];
 
                                 if (val === null || val === undefined || String(val).trim() === '') val = 'S/D';
-                                
+
                                 if (typeof val === 'string' && val.includes(',')) {
                                     val.split(',').forEach(v => {
                                         const sv = v.trim();
@@ -2472,11 +2947,11 @@
                                     counts[val] = (counts[val] || 0) + 1;
                                 }
                             });
-                            
+
                             const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
                             const totalUnits = this.filteredIEDs.length;
                             const maxVal = Math.max(...entries.map(e => e[1])) || 1;
-                            
+
                             return entries.map(([label, count]) => ({
                                 label: label,
                                 count: count,
@@ -2489,19 +2964,111 @@
                         }
                     },
 
+                    getQualitativeDistribution(stage, type, color) {
+                        try {
+                            if (!this.qualitativeData || this.qualitativeData.length === 0) return [];
+
+                            const stageKey = String(stage).toLowerCase().trim();
+                            const typeKey = String(type).toLowerCase().trim();
+
+                            // 1. Get filtered DANE IDs
+                            const filteredIds = new Set(this.filteredIEDs.map(i => String(i.id).trim()));
+
+                            // 2. Filter qualitative rows with robustness
+                            const rows = this.qualitativeData.filter(r => {
+                                const rStage = String(r.Etapa || r.etapa || "").toLowerCase().trim();
+                                const rType = String(r.Tipo || r.tipo || "").toLowerCase().trim();
+                                const rId = String(r.ID_Colegio || r.id_colegio || r.id || "").trim();
+                                return rStage === stageKey && rType === typeKey && filteredIds.has(rId);
+                            });
+
+                            if (rows.length === 0) return [];
+
+                            // 3. Count categories (flexible header matching)
+                            const counts = {};
+                            rows.forEach(r => {
+                                // Check for Cat_1...Cat_5 in various cases
+                                ['Cat_1', 'Cat_2', 'Cat_3', 'Cat_4', 'Cat_5', 'cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5'].forEach(key => {
+                                    const val = r[key];
+                                    if (val && val !== 'ERROR' && String(val).trim() !== '') {
+                                        const cleanVal = String(val).trim();
+                                        counts[cleanVal] = (counts[cleanVal] || 0) + 1;
+                                    }
+                                });
+                            });
+
+                            const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+                            if (entries.length === 0) return [];
+
+                            const totalSchoolsInFilter = this.filteredIEDs.length || 1;
+                            const maxCount = entries[0][1] || 1;
+
+                            return entries.slice(0, 10).map(([label, count]) => {
+                                const pct = (count / maxCount) * 100;
+                                const barPct = isNaN(pct) ? 0 : Math.max(pct, 2);
+                                return {
+                                    label: label,
+                                    count: count,
+                                    pct: barPct,
+                                    totalPct: Math.round((count / totalSchoolsInFilter) * 100),
+                                    barStyle: {
+                                        width: barPct + '%',
+                                        backgroundColor: color,
+                                        height: '100%',
+                                        borderRadius: '10px'
+                                    }
+                                };
+                            });
+                        } catch (err) {
+                            console.error("Error in getQualitativeDistribution:", err);
+                            return [];
+                        }
+                    },
+
+                    getInstitutionalQualitativeCategories(stage, type) {
+                        try {
+                            if (!this.qualitativeData || !this.selectedIED) return [];
+                            const stageKey = String(stage).toLowerCase().trim();
+                            const typeKey = String(type).toLowerCase().trim();
+                            const iedId = String(this.selectedIED.id || this.selectedIED.ID_Colegio || "").trim();
+
+                            const row = this.qualitativeData.find(r => {
+                                const rStage = String(r.Etapa || r.etapa || "").toLowerCase().trim();
+                                const rType = String(r.Tipo || r.tipo || "").toLowerCase().trim();
+                                const rId = String(r.ID_Colegio || r.id_colegio || r.id || "").trim();
+                                return rStage === stageKey && rType === typeKey && rId === iedId;
+                            });
+
+                            if (!row) return [];
+
+                            const cats = [];
+                            ['Cat_1', 'Cat_2', 'Cat_3', 'Cat_4', 'Cat_5', 'cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5'].forEach(key => {
+                                const val = row[key];
+                                if (val && val !== 'ERROR' && String(val).trim() !== '') {
+                                    const cleanVal = String(val).trim();
+                                    if (!cats.includes(cleanVal)) cats.push(cleanVal);
+                                }
+                            });
+                            return cats;
+                        } catch (err) {
+                            console.error("Error in getInstitutionalQualitativeCategories:", err);
+                            return [];
+                        }
+                    },
+
                     getDistributionForValue(vals, binCount = 10) {
                         if (!vals || vals.length === 0) return [];
                         const maxVal = Math.max(...vals) || 1;
                         const minVal = Math.min(...vals) || 0;
                         const range = (maxVal - minVal) || 1;
-                        
+
                         const bins = new Array(binCount).fill(0);
                         vals.forEach(v => {
                             let idx = Math.floor(((v - minVal) / range) * binCount);
                             if (v === maxVal) idx = binCount - 1;
                             if (idx >= 0 && idx < binCount) bins[idx]++;
                         });
-                        
+
                         const maxBinCount = Math.max(...bins) || 1;
                         return bins.map((count, i) => ({
                             height: (count / maxBinCount) * 100,
@@ -2550,7 +3117,7 @@
                         const n = vals.length;
                         const sum = vals.reduce((a, b) => a + b, 0);
                         const mean = sum / n;
-                        
+
                         const variance = vals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / n;
                         const sd = Math.sqrt(variance);
 
