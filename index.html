@@ -1465,7 +1465,7 @@
                                                                 <span :style="`color:${qType.color};`" x-text="item.count + ' (' + item.totalPct + '%)'"></span>
                                                             </div>
                                                             <!-- Explicación (2 frases) -->
-                                                            <div x-show="diccionarioCualitativo[item.label]" x-text="diccionarioCualitativo[item.label]"
+                                                            <div x-show="diccionarioCualitativo[qType.id] && diccionarioCualitativo[qType.id][item.label]" x-text="diccionarioCualitativo[qType.id][item.label]"
                                                                  style="font-size:0.58rem; color:#64748b; font-weight:500; font-style:italic; line-height:1.4; padding-left:14px; border-left:2px solid #e2e8f0; margin-top:2px;">
                                                             </div>
                                                         </div>
@@ -2595,7 +2595,7 @@
                                                                 <span x-text="catItem"></span>
                                                             </div>
                                                             <!-- Explicación (2 frases) -->
-                                                            <div x-show="diccionarioCualitativo[catItem]" x-text="diccionarioCualitativo[catItem]"
+                                                            <div x-show="diccionarioCualitativo[typeObj.id] && diccionarioCualitativo[typeObj.id][catItem]" x-text="diccionarioCualitativo[typeObj.id][catItem]"
                                                                  style="font-size:0.65rem; color:#64748b; font-style:italic; line-height:1.4; margin-left:14px; padding-left:8px; border-left:2px solid #e2e8f0;">
                                                             </div>
                                                         </div>
