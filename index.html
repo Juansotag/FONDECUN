@@ -1071,13 +1071,27 @@
                             class="map-metric-btn">Participación</button>
                         <button @click="iedMetric='pct_avance_global'; updateMarkers()"
                             :style="iedMetric==='pct_avance_global' ? 'background:#3b82f6;color:#fff;border-color:#3b82f6;' : ''"
-                            class="map-metric-btn">% Avance Global</button>
+                            class="map-metric-btn">% Avance Global - Formación</button>
                         <button @click="iedMetric='eje_transformacion_practicas'; updateMarkers()"
                             :style="iedMetric==='eje_transformacion_practicas' ? 'background:#16a34a;color:#fff;border-color:#16a34a;' : ''"
                             class="map-metric-btn">T. Prácticas Docentes</button>
                         <button @click="iedMetric='eje_descenso_curricular'; updateMarkers()"
                             :style="iedMetric==='eje_descenso_curricular' ? 'background:#ea580c;color:#fff;border-color:#ea580c;' : ''"
                             class="map-metric-btn">A. Descenso Curricular</button>
+                    </div>
+                    <div style="display:flex; gap:6px; padding:0 12px 10px; flex-wrap:wrap;">
+                        <button @click="iedMetric='familia_avance_global'; updateMarkers()"
+                            :style="iedMetric==='familia_avance_global' ? 'background:#10b981;color:#fff;border-color:#10b981;' : ''"
+                            class="map-metric-btn">% Avance Global - Familia</button>
+                        <button @click="iedMetric='familia_eje_1'; updateMarkers()"
+                            :style="iedMetric==='familia_eje_1' ? 'background:#059669;color:#fff;border-color:#059669;' : ''"
+                            class="map-metric-btn">Consolidación Comité</button>
+                        <button @click="iedMetric='familia_eje_2'; updateMarkers()"
+                            :style="iedMetric==='familia_eje_2' ? 'background:#047857;color:#fff;border-color:#047857;' : ''"
+                            class="map-metric-btn">Reconocimiento C. Familia</button>
+                        <button @click="iedMetric='familia_eje_3'; updateMarkers()"
+                            :style="iedMetric==='familia_eje_3' ? 'background:#065f46;color:#fff;border-color:#065f46;' : ''"
+                            class="map-metric-btn">Constitución C. Familia</button>
                     </div>
                     <!-- Fila C: leyenda dinámica -->
                     <div
@@ -1101,8 +1115,11 @@
                         <div :style="iedMetric !== 'participacion' ? 'display:flex' : 'display:none'"
                             style="align-items:center; gap:6px;">
                             <span>0%</span>
-                            <div style="flex:1; height:8px; border-radius:4px;"
-                                :style="iedMetric==='pct_avance_global' ? 'background:linear-gradient(to right,#bfdbfe,#1e40af)' : iedMetric==='eje_transformacion_practicas' ? 'background:linear-gradient(to right,#bbf7d0,#15803d)' : iedMetric==='eje_descenso_curricular' ? 'background:linear-gradient(to right,#fed7aa,#c2410c)' : 'background:#e2e8f0'">
+                            <div style="flex:1; height:8px; border-radius:4px;" :style="iedMetric==='pct_avance_global' ? 'background:linear-gradient(to right,#bfdbfe,#1e40af)' : 
+                                        iedMetric==='eje_transformacion_practicas' ? 'background:linear-gradient(to right,#bbf7d0,#15803d)' : 
+                                        iedMetric==='eje_descenso_curricular' ? 'background:linear-gradient(to right,#fed7aa,#c2410c)' : 
+                                        iedMetric.startsWith('familia_') ? 'background:linear-gradient(to right,#d1fae5,#065f46)' :
+                                        'background:#e2e8f0'">
                             </div>
                             <span>100%</span>
                         </div>
@@ -1129,7 +1146,7 @@
                     <div style="display:flex; gap:6px; padding:4px 12px 6px;">
                         <button @click="choroMetric='pct_avance_global'; updateChoropleth()"
                             :style="choroMetric==='pct_avance_global' ? 'background:var(--primary);color:#fff;border-color:var(--primary);' : ''"
-                            class="map-metric-btn">% Avance Global</button>
+                            class="map-metric-btn">% Avance Global - Formación</button>
                         <button @click="choroMetric='eje_transformacion_practicas'; updateChoropleth()"
                             :style="choroMetric==='eje_transformacion_practicas' ? 'background:#16a34a;color:#fff;border-color:#16a34a;' : ''"
                             class="map-metric-btn">T. Prácticas Docentes</button>
@@ -1137,13 +1154,29 @@
                             :style="choroMetric==='eje_descenso_curricular' ? 'background:#ea580c;color:#fff;border-color:#ea580c;' : ''"
                             class="map-metric-btn">A. Descenso Curricular</button>
                     </div>
+                    <div style="display:flex; gap:6px; padding:0 12px 10px; flex-wrap:wrap;">
+                        <button @click="choroMetric='familia_avance_global'; updateChoropleth()"
+                            :style="choroMetric==='familia_avance_global' ? 'background:#10b981;color:#fff;border-color:#10b981;' : ''"
+                            class="map-metric-btn">% Avance Global - Familia</button>
+                        <button @click="choroMetric='familia_eje_1'; updateChoropleth()"
+                            :style="choroMetric==='familia_eje_1' ? 'background:#059669;color:#fff;border-color:#059669;' : ''"
+                            class="map-metric-btn">Consolidación Comité</button>
+                        <button @click="choroMetric='familia_eje_2'; updateChoropleth()"
+                            :style="choroMetric==='familia_eje_2' ? 'background:#047857;color:#fff;border-color:#047857;' : ''"
+                            class="map-metric-btn">Reconocimiento C. Familia</button>
+                        <button @click="choroMetric='familia_eje_3'; updateChoropleth()"
+                            :style="choroMetric==='familia_eje_3' ? 'background:#065f46;color:#fff;border-color:#065f46;' : ''"
+                            class="map-metric-btn">Constitución C. Familia</button>
+                    </div>
                     <!-- Fila C: escala + sin datos + hint -->
                     <div
                         style="display:flex; align-items:center; gap:8px; padding:2px 14px 6px; border-bottom:1px solid #f1f5f9; font-size:0.58rem; color:#64748b;">
                         <span>0%</span>
-                        <div style="flex:1; height:7px; border-radius:4px; min-width:40px;"
-                            :style="`background:linear-gradient(to right,${choroMetric==='pct_avance_global'?'#bfdbfe,#1d4ed8':choroMetric==='eje_transformacion_practicas'?'#bbf7d0,#15803d':'#fed7aa,#c2410c'})`">
-                        </div>
+                        <div style="flex:1; height:7px; border-radius:4px; min-width:40px;" :style="`background:linear-gradient(to right,${
+                                choroMetric==='pct_avance_global'?'#bfdbfe,#1d4ed8':
+                                choroMetric==='eje_transformacion_practicas'?'#bbf7d0,#15803d':
+                                choroMetric==='eje_descenso_curricular'?'#fed7aa,#c2410c':
+                                '#d1fae5,#065f46'})`"></div>
                         <span>100%</span>
                         <span style="display:flex;align-items:center;gap:3px;margin-left:8px;font-style:italic;">
                             <span
@@ -1193,15 +1226,22 @@
                 <div style="display:flex; flex-direction:column; gap:40px;">
 
                     <!-- ── SEPARADOR MÓDULO FORMACIÓN ── -->
-                    <div style="margin-top:20px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-radius:20px; border:1px solid #bfdbfe; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <div
+                        style="margin-top:20px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-radius:20px; border:1px solid #bfdbfe; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                         <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:8px;">
-                            <div style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
-                            <h2 style="font-size:1.4rem; font-weight:900; color:#1e40af; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
+                            <div
+                                style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);">
+                            </div>
+                            <h2
+                                style="font-size:1.4rem; font-weight:900; color:#1e40af; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
                                 Módulo: Formación de Profesores
                             </h2>
-                            <div style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                            <div
+                                style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);">
+                            </div>
                         </div>
-                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">Análisis detallado de las etapas de formación profesoral (E1 - E6)</p>
+                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">
+                            Análisis detallado de las etapas de formación profesoral (E1 - E6)</p>
                     </div>
 
                     <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL ── -->
@@ -1538,36 +1578,47 @@
                     </div>
 
                     <!-- ── SEPARADOR MÓDULO FAMILIA ── -->
-                    <div style="margin-top:80px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-radius:20px; border:1px solid #bbf7d0; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <div
+                        style="margin-top:80px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-radius:20px; border:1px solid #bbf7d0; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                         <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:8px;">
-                            <div style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);"></div>
-                            <h2 style="font-size:1.4rem; font-weight:900; color:#065f46; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
+                            <div
+                                style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+                            </div>
+                            <h2
+                                style="font-size:1.4rem; font-weight:900; color:#065f46; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
                                 Módulo: Familia
                             </h2>
-                            <div style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);"></div>
+                            <div
+                                style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+                            </div>
                         </div>
-                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">Análisis detallado del componente de acompañamiento y desarrollo familiar</p>
+                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">
+                            Análisis detallado del componente de acompañamiento y desarrollo familiar</p>
                     </div>
 
                     <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL - FAMILIA ── -->
                     <div style="margin-bottom:50px;">
                         <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                            <h4 style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                            <h4
+                                style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
                                 Contexto y Avance Global - Familia</h4>
-                            <div style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
+                            <div
+                                style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
                             </div>
                         </div>
 
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
+                        <div
+                            style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
                             <template x-for="metric in [
-                                { key: 'familia_avance_global', label: '% Avance Global Familia',        color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
-                                { key: 'familia_eje_1',         label: 'Consolidación del Comité',       color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
-                                { key: 'familia_eje_2',         label: 'Reconocimiento del Componente',  color: '#047857', bg: '#f0fdfa', border: '#99f6e4' },
-                                { key: 'familia_eje_3',         label: 'Constitución del Comité',        color: '#065f46', bg: '#f7fee7', border: '#d9f99d' }
+                                { key: 'familia_avance_global', label: '% Avance Global Familia',                                                            color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
+                                { key: 'familia_eje_1',         label: '1. Avance en la consolidación del comité',                                           color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
+                                { key: 'familia_eje_2',         label: '2. Reconocimiento del componente familiar e intereses declarados sobre familia',      color: '#047857', bg: '#f0fdfa', border: '#99f6e4' },
+                                { key: 'familia_eje_3',         label: '3. Avance en la constitución y consolidación del Comité de Familia',                  color: '#065f46', bg: '#f7fee7', border: '#d9f99d' }
                             ]">
                                 <div :style="`background:${metric.bg}; border:1px solid ${metric.border}; border-radius:12px; padding:18px; height:220px; display:flex; flex-direction:column;`"
                                     class="hover-card">
-                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                                    <div
+                                        style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                                         <h5 :style="`font-size:0.72rem; font-weight:800; color:${metric.color}; margin:0; text-transform:uppercase; letter-spacing:0.04em; line-height:1.3; max-width:70%;`"
                                             x-text="metric.label"></h5>
                                         <template x-if="getMetricasStats(metric.key)">
@@ -1575,11 +1626,13 @@
                                                 <div style="font-size:1rem; font-weight:900;"
                                                     :style="`color:${metric.color}`"
                                                     x-text="getMetricasStats(metric.key).avg + '%'"></div>
-                                                <div style="font-size:0.5rem; color:#94a3b8; font-weight:700;">PROMEDIO</div>
+                                                <div style="font-size:0.5rem; color:#94a3b8; font-weight:700;">PROMEDIO
+                                                </div>
                                             </div>
                                         </template>
                                     </div>
-                                    <div style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:6px 2px 2px 2px; background:rgba(255,255,255,0.6); border-radius:8px;">
+                                    <div
+                                        style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:6px 2px 2px 2px; background:rgba(255,255,255,0.6); border-radius:8px;">
                                         <template x-for="bin in getMetricasDistribution(metric.key)">
                                             <div :style="`flex:1; background:${metric.color}; height:${Math.max(bin.height, 2)}%; opacity:0.82; border-radius:2px 2px 0 0;`"
                                                 :title="`${bin.count} instituciones · ${bin.rangeStart}%–${bin.rangeEnd}%`">
@@ -1600,98 +1653,97 @@
 
                     <!-- ── SUBSECCIÓN: FAMILIA AGREGADO ── -->
                     <div style="margin-top:40px;">
-                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                                <h4
-                                    style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
-                                    Desempeño Específico Colegios - Familia</h4>
-                                <div
-                                    style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
-                                </div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                            <h4
+                                style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                Desempeño Específico Colegios - Familia</h4>
+                            <div
+                                style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
                             </div>
+                        </div>
 
-                            <div style="display:flex; flex-direction:column; gap:30px;">
-                                <template x-for="stageNum in [1, 2, 3, 4, 5]" :key="'fam-gen-stg-' + stageNum">
-                                    <div x-show="diccionarioFamilia.some(f => f.etapa === stageNum)">
-                                        <div style="font-weight:800; font-size:0.85rem; color:#1e293b; text-transform:uppercase; border-bottom:2px solid #e2e8f0; padding-bottom:6px; margin-bottom:15px;"
-                                            x-text="'Etapa ' + stageNum + ' - ' + (diccionarioFamilia.find(f => f.etapa === stageNum) ? diccionarioFamilia.find(f => f.etapa === stageNum).etapa_nombre : '')">
-                                        </div>
-                                        <div
-                                            style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
-                                            <template
-                                                x-for="famDef in diccionarioFamilia.filter(f => f.etapa === stageNum)"
-                                                :key="famDef.id">
-                                                <div style="padding:16px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; transition:all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
-                                                    class="hover-card">
-                                                    <div
-                                                        style="font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-                                                        <span x-text="famDef.criterio_nombre"
-                                                            style="flex:1; line-height:1.3;"></span>
-                                                        <div style="text-align:right;">
-                                                            <span
-                                                                style="display:block; color:#10b981; font-size:1.1rem; font-weight:800;"
-                                                                x-text="fmtNumOrStr(getFamiliaAverage(famDef.id))"></span>
-                                                            <span
-                                                                style="font-size:0.5rem; color:#94a3b8; font-weight:600;">PROMEDIO</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Stats Row Summary -->
-                                                    <template x-if="getFamiliaStats(famDef.id)">
-                                                        <div
-                                                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8fafc; padding:4px 10px; border-radius:6px; border:1px solid #f1f5f9;">
-                                                            <div>
-                                                                <span
-                                                                    style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:4px;">DE:</span>
-                                                                <span style="font-size:0.7rem; font-weight:700; color:#475569;"
-                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).sd)"></span>
-                                                            </div>
-                                                            <div style="font-size:0.7rem; font-weight:700; color:#64748b;">
-                                                                <span
-                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q1)"></span>
-                                                                |
-                                                                <span x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q2)"
-                                                                    style="color:#10b981;"></span> |
-                                                                <span
-                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q3)"></span>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-
-                                                    <!-- Chart Container -->
-                                                    <div style="position:relative; margin-top:10px; margin-bottom:12px;">
-                                                        <div
-                                                            style="display:flex; align-items:flex-end; gap:3px; height:50px; padding:0 2px;">
-                                                            <template x-for="h in getFamiliaDistribution(famDef.id)">
-                                                                <div :style="`flex:1; background:#cbd5e1; height:${Math.max(h.height, 3)}%; opacity:${h.height > 0 ? 1 : 0.4}`"
-                                                                    style="border-radius:2px 2px 0 0; min-width:6px; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;"
-                                                                    @mouseenter="$el.style.background = '#10b981'"
-                                                                    @mouseleave="$el.style.background = '#cbd5e1'"
-                                                                    :title="`${h.count} instituciones (${h.range})`"></div>
-                                                            </template>
-                                                        </div>
-                                                        <!-- Labels for chart range (0 to 100%) -->
-                                                        <div
-                                                            style="display:flex; justify-content:space-between; margin-top:6px; border-top:1px solid #f1f5f9; padding-top:4px;">
-                                                            <span
-                                                                style="font-size:0.55rem; color:#94a3b8; font-weight:600;">0%</span>
-                                                            <span
-                                                                style="font-size:0.55rem; color:#94a3b8; font-weight:600;">100%</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div
-                                                        style="font-size:0.65rem; color:#64748b; line-height:1.4;">
-                                                        <strong>Ejes:</strong> <span x-text="famDef.ejes"></span>
+                        <div style="display:flex; flex-direction:column; gap:30px;">
+                            <template x-for="stageNum in [1, 2, 3, 4, 5]" :key="'fam-gen-stg-' + stageNum">
+                                <div x-show="diccionarioFamilia.some(f => f.etapa === stageNum)">
+                                    <div style="font-weight:800; font-size:0.85rem; color:#1e293b; text-transform:uppercase; border-bottom:2px solid #e2e8f0; padding-bottom:6px; margin-bottom:15px;"
+                                        x-text="'Etapa ' + stageNum + ' - ' + (diccionarioFamilia.find(f => f.etapa === stageNum) ? diccionarioFamilia.find(f => f.etapa === stageNum).etapa_nombre : '')">
+                                    </div>
+                                    <div
+                                        style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                                        <template x-for="famDef in diccionarioFamilia.filter(f => f.etapa === stageNum)"
+                                            :key="famDef.id">
+                                            <div style="padding:16px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; transition:all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
+                                                class="hover-card">
+                                                <div
+                                                    style="font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                                                    <span x-text="famDef.criterio_nombre"
+                                                        style="flex:1; line-height:1.3;"></span>
+                                                    <div style="text-align:right;">
+                                                        <span
+                                                            style="display:block; color:#10b981; font-size:1.1rem; font-weight:800;"
+                                                            x-text="fmtNumOrStr(getFamiliaAverage(famDef.id))"></span>
+                                                        <span
+                                                            style="font-size:0.5rem; color:#94a3b8; font-weight:600;">PROMEDIO</span>
                                                     </div>
                                                 </div>
-                                            </template>
-                                        </div>
+
+                                                <!-- Stats Row Summary -->
+                                                <template x-if="getFamiliaStats(famDef.id)">
+                                                    <div
+                                                        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8fafc; padding:4px 10px; border-radius:6px; border:1px solid #f1f5f9;">
+                                                        <div>
+                                                            <span
+                                                                style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:4px;">DE:</span>
+                                                            <span
+                                                                style="font-size:0.7rem; font-weight:700; color:#475569;"
+                                                                x-text="fmtNumOrStr(getFamiliaStats(famDef.id).sd)"></span>
+                                                        </div>
+                                                        <div style="font-size:0.7rem; font-weight:700; color:#64748b;">
+                                                            <span
+                                                                x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q1)"></span>
+                                                            |
+                                                            <span x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q2)"
+                                                                style="color:#10b981;"></span> |
+                                                            <span
+                                                                x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q3)"></span>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <!-- Chart Container -->
+                                                <div style="position:relative; margin-top:10px; margin-bottom:12px;">
+                                                    <div
+                                                        style="display:flex; align-items:flex-end; gap:3px; height:50px; padding:0 2px;">
+                                                        <template x-for="h in getFamiliaDistribution(famDef.id)">
+                                                            <div :style="`flex:1; background:#cbd5e1; height:${Math.max(h.height, 3)}%; opacity:${h.height > 0 ? 1 : 0.4}`"
+                                                                style="border-radius:2px 2px 0 0; min-width:6px; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;"
+                                                                @mouseenter="$el.style.background = '#10b981'"
+                                                                @mouseleave="$el.style.background = '#cbd5e1'"
+                                                                :title="`${h.count} instituciones (${h.range})`"></div>
+                                                        </template>
+                                                    </div>
+                                                    <!-- Labels for chart range (0 to 100%) -->
+                                                    <div
+                                                        style="display:flex; justify-content:space-between; margin-top:6px; border-top:1px solid #f1f5f9; padding-top:4px;">
+                                                        <span
+                                                            style="font-size:0.55rem; color:#94a3b8; font-weight:600;">0%</span>
+                                                        <span
+                                                            style="font-size:0.55rem; color:#94a3b8; font-weight:600;">100%</span>
+                                                    </div>
+                                                </div>
+
+                                                <div style="font-size:0.65rem; color:#64748b; line-height:1.4;">
+                                                    <strong>Ejes:</strong> <span x-text="famDef.ejes"></span>
+                                                </div>
+                                            </div>
+                                        </template>
                                     </div>
-                                </template>
-                            </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
+            </div>
         </main>
 
         <!-- Sidebar fijo a la derecha -->
@@ -1890,7 +1942,8 @@
 
                         <!-- ── MÉTRICAS GLOBALES Y EJES TRANSVERSALES ── -->
                         <div style="margin-bottom:15px; text-align:center;">
-                            <span style="font-size:0.6rem; font-weight:900; color:#1e40af; text-transform:uppercase; letter-spacing:0.1em; background:#eff6ff; padding:2px 10px; border-radius:99px; border:1px solid #bfdbfe;">
+                            <span
+                                style="font-size:0.6rem; font-weight:900; color:#1e40af; text-transform:uppercase; letter-spacing:0.1em; background:#eff6ff; padding:2px 10px; border-radius:99px; border:1px solid #bfdbfe;">
                                 Módulo: Formación
                             </span>
                         </div>
@@ -1969,39 +2022,66 @@
                                 </div>
 
                                 <!-- Métricas Familia Sidebar -->
-                                <div style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
-                                    <h4 style="font-size:0.85rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                <div
+                                    style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
+                                    <h4
+                                        style="font-size:0.85rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
                                         Avance Familia</h4>
-                                    <div style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
+                                    <div
+                                        style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
                                     </div>
                                 </div>
 
-                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
-                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
-                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Avance Global</div>
-                                        <div style="font-size:1.2rem; font-weight:900; color:#10b981;" x-text="selectedIED.metricas.familia_avance_global != null ? Math.round(selectedIED.metricas.familia_avance_global * 100) + '%' : 'N/D'"></div>
+                                <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+                                    <div
+                                        style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div
+                                            style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">
+                                            Avance Global Familia</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#10b981;"
+                                            x-text="selectedIED.metricas.familia_avance_global != null ? Math.round(selectedIED.metricas.familia_avance_global * 100) + '%' : 'N/D'">
+                                        </div>
                                     </div>
-                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
-                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 1: Comité</div>
-                                        <div style="font-size:1.2rem; font-weight:900; color:#059669;" x-text="selectedIED.metricas.familia_eje_1 != null ? Math.round(selectedIED.metricas.familia_eje_1 * 100) + '%' : 'N/D'"></div>
+                                    <div
+                                        style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div
+                                            style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px; line-height:1.2;">
+                                            1. Avance en la consolidación del comité</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#059669;"
+                                            x-text="selectedIED.metricas.familia_eje_1 != null ? Math.round(selectedIED.metricas.familia_eje_1 * 100) + '%' : 'N/D'">
+                                        </div>
                                     </div>
                                 </div>
-                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:10px;">
-                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
-                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 2: Reconocimiento</div>
-                                        <div style="font-size:1.2rem; font-weight:900; color:#047857;" x-text="selectedIED.metricas.familia_eje_2 != null ? Math.round(selectedIED.metricas.familia_eje_2 * 100) + '%' : 'N/D'"></div>
+                                <div style="display:grid; grid-template-columns: 1fr; gap:10px; margin-top:10px;">
+                                    <div
+                                        style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div
+                                            style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px; line-height:1.2;">
+                                            2. Reconocimiento del componente familiar e intereses declarados sobre
+                                            familia</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#047857;"
+                                            x-text="selectedIED.metricas.familia_eje_2 != null ? Math.round(selectedIED.metricas.familia_eje_2 * 100) + '%' : 'N/D'">
+                                        </div>
                                     </div>
-                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
-                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 3: Constitución</div>
-                                        <div style="font-size:1.2rem; font-weight:900; color:#065f46;" x-text="selectedIED.metricas.familia_eje_3 != null ? Math.round(selectedIED.metricas.familia_eje_3 * 100) + '%' : 'N/D'"></div>
+                                    <div
+                                        style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div
+                                            style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px; line-height:1.2;">
+                                            3. Avance en la constitución y consolidación del Comité de Familia</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#065f46;"
+                                            x-text="selectedIED.metricas.familia_eje_3 != null ? Math.round(selectedIED.metricas.familia_eje_3 * 100) + '%' : 'N/D'">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Detalle por Etapas -->
-                                <div style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
-                                    <h4 style="font-size:0.85rem; font-weight:800; color:#475569; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                <div
+                                    style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
+                                    <h4
+                                        style="font-size:0.85rem; font-weight:800; color:#475569; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
                                         Detalle de Formación</h4>
-                                    <div style="flex:1; height:2px; background:linear-gradient(to right, #cbd5e1, transparent); opacity:0.3;">
+                                    <div
+                                        style="flex:1; height:2px; background:linear-gradient(to right, #cbd5e1, transparent); opacity:0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -2902,8 +2982,10 @@
                             </div><!-- /stage-block -->
                         </template>
 
-                        <div style="margin-top:30px; margin-bottom:15px; border-top:2px solid #bbf7d0; padding-top:20px; text-align:center;">
-                            <span style="font-size:0.75rem; font-weight:900; color:#065f46; text-transform:uppercase; letter-spacing:0.1em; background:#f0fdf4; padding:4px 12px; border-radius:99px;">
+                        <div
+                            style="margin-top:30px; margin-bottom:15px; border-top:2px solid #bbf7d0; padding-top:20px; text-align:center;">
+                            <span
+                                style="font-size:0.75rem; font-weight:900; color:#065f46; text-transform:uppercase; letter-spacing:0.1em; background:#f0fdf4; padding:4px 12px; border-radius:99px;">
                                 Módulo: Familia
                             </span>
                         </div>
@@ -3963,7 +4045,11 @@
                         const scales = {
                             pct_avance_global: (t) => `hsl(${210 + t * 15},${55 + t * 35}%,${88 - t * 63}%)`,
                             eje_transformacion_practicas: (t) => `hsl(${138},${50 + t * 42}%,${86 - t * 64}%)`,
-                            eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`
+                            eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`,
+                            familia_avance_global: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                            familia_eje_1: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                            familia_eje_2: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                            familia_eje_3: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`
                         };
                         const getColor = scales[this.choroMetric] || scales.pct_avance_global;
 
@@ -3989,7 +4075,11 @@
                                 const metricLabel = {
                                     pct_avance_global: '% Avance Global',
                                     eje_transformacion_practicas: 'Transformación Prácticas',
-                                    eje_descenso_curricular: 'Descenso Curricular'
+                                    eje_descenso_curricular: 'Descenso Curricular',
+                                    familia_avance_global: 'Avance Global Familia',
+                                    familia_eje_1: 'Eje 1: Consolidación',
+                                    familia_eje_2: 'Eje 2: Reconocimiento',
+                                    familia_eje_3: 'Eje 3: Constitución'
                                 }[this.choroMetric];
                                 const valStr = entry && entry.count > 0
                                     ? Math.round((entry.sum / entry.count) * 100) + '%'
@@ -4030,7 +4120,11 @@
                             const colors = {
                                 pct_avance_global: (t) => `hsl(${210 + t * 15},${55 + t * 35}%,${88 - t * 63}%)`,
                                 eje_transformacion_practicas: (t) => `hsl(${138},${50 + t * 42}%,${86 - t * 64}%)`,
-                                eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`
+                                eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`,
+                                familia_avance_global: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                                familia_eje_1: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                                familia_eje_2: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`,
+                                familia_eje_3: (t) => `hsl(158, ${40 + t * 40}%, ${92 - t * 65}%)`
                             };
                             return (colors[this.iedMetric] || colors.pct_avance_global)(t);
                         };
@@ -4057,7 +4151,11 @@
                             const metricLabels = {
                                 pct_avance_global: '% Avance Global',
                                 eje_transformacion_practicas: 'Transf. Prácticas',
-                                eje_descenso_curricular: 'Descenso Curricular'
+                                eje_descenso_curricular: 'Descenso Curricular',
+                                familia_avance_global: 'Avance Familia',
+                                familia_eje_1: 'F: Eje 1',
+                                familia_eje_2: 'F: Eje 2',
+                                familia_eje_3: 'F: Eje 3'
                             };
                             const metricVal = this.iedMetric !== 'participacion' && i.metricas?.[this.iedMetric] != null
                                 ? `<span style="color:#3b82f6;font-weight:700;">${metricLabels[this.iedMetric]}: ${Math.round(i.metricas[this.iedMetric] * 100)}%</span>`
