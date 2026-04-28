@@ -621,7 +621,8 @@
         /* Botones de métrica en los mapas */
         .map-metric-btn {
             flex: 1 1 0%;
-            width: 0 !important;         /* fuerza que flex distribuya por igual */
+            width: 0 !important;
+            /* fuerza que flex distribuya por igual */
             padding: 7px 6px !important;
             font-size: 0.7rem !important;
             font-weight: 700;
@@ -636,6 +637,7 @@
             text-overflow: ellipsis;
             transition: all 0.18s;
         }
+
         .map-metric-btn:hover {
             background: #f8fafc;
             border-color: #94a3b8;
@@ -667,30 +669,32 @@
             <h1>DataPromce</h1>
         </div>
         <div class="header-actions top-logos">
-                <button
+            <button
                 @click="sidebarHidden = !sidebarHidden; setTimeout(() => { drawSankey(); if(map) map.invalidateSize(); }, 350)"
                 style="margin-right: 20px; padding: 8px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: white; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
                 onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc'"
                 onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='white'">
-                    <!-- Icono de flechas -->
-                    <svg x-show="!sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                    </svg>
-                    <svg x-show="sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
-                    </svg>
-                    <span x-text="sidebarHidden ? 'Mostrar Perfil' : 'Ocultar Perfil'"></span>
-                </button>
-                <!-- Link Guía del usuario -->
-                <a href="guia.html" target="_blank" style="text-decoration:none; margin-right:16px;" title="Ver guía de uso del dashboard">
-                    <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.7rem;font-weight:800;transition:all 0.2s;"
-                          onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
-                          onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
-                </a>
+                <!-- Icono de flechas -->
+                <svg x-show="!sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+                <svg x-show="sidebarHidden" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+                </svg>
+                <span x-text="sidebarHidden ? 'Mostrar Perfil' : 'Ocultar Perfil'"></span>
+            </button>
+            <!-- Link Guía del usuario -->
+            <a href="guia.html" target="_blank" style="text-decoration:none; margin-right:16px;"
+                title="Ver guía de uso del dashboard">
+                <span
+                    style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.7rem;font-weight:800;transition:all 0.2s;"
+                    onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
+                    onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
+            </a>
             <img src="assets/Universidad de la Sabana.png" alt="Universidad de la Sabana"
                 style="height: 40px; margin-right: 15px; object-fit: contain;">
             <img src="assets/Govlab.png" alt="Goblab" style="height: 40px; object-fit: contain;">
@@ -940,10 +944,12 @@
                         <span
                             style="font-size:0.7rem; color:#64748b; background:#f1f5f9; padding:2px 10px; border-radius:99px;"
                             x-text="filteredIEDs.length + ' encontrados'"></span>
-                        <a href="guia.html#tabla-resultados" target="_blank" style="text-decoration:none;" title="Ver guía de uso: Tabla de Resultados">
-                            <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;transition:all 0.2s;"
-                                  onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
-                                  onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
+                        <a href="guia.html#tabla-resultados" target="_blank" style="text-decoration:none;"
+                            title="Ver guía de uso: Tabla de Resultados">
+                            <span
+                                style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;transition:all 0.2s;"
+                                onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
+                                onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
                         </a>
                     </div>
                     <button @click="tableVisible = !tableVisible"
@@ -1050,10 +1056,12 @@
                     <!-- Fila A: solo título -->
                     <div style="padding:10px 14px 4px; display:flex; align-items:center; gap:6px;">
                         <span style="font-size:0.85rem; font-weight:700; color:#0f172a;">Avance por IED</span>
-                        <a href="guia.html#mapa-ied" target="_blank" style="text-decoration:none;" title="Ver guía de uso: Mapa de IED">
-                            <span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.6rem;font-weight:800;transition:all 0.2s;"
-                                  onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
-                                  onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
+                        <a href="guia.html#mapa-ied" target="_blank" style="text-decoration:none;"
+                            title="Ver guía de uso: Mapa de IED">
+                            <span
+                                style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.6rem;font-weight:800;transition:all 0.2s;"
+                                onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
+                                onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
                         </a>
                     </div>
                     <!-- Fila B: botones métrica -->
@@ -1072,17 +1080,26 @@
                             class="map-metric-btn">A. Descenso Curricular</button>
                     </div>
                     <!-- Fila C: leyenda dinámica -->
-                    <div style="padding:2px 12px 8px; border-bottom:1px solid #f1f5f9; font-size:0.58rem; color:#64748b;">
+                    <div
+                        style="padding:2px 12px 8px; border-bottom:1px solid #f1f5f9; font-size:0.58rem; color:#64748b;">
                         <!-- Puntos de etapas (participación) -->
-                        <div :style="iedMetric === 'participacion' ? 'display:flex' : 'display:none'" style="gap:10px; align-items:center; flex-wrap:wrap;">
-                            <span style="display:flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>0 etapas</span>
-                            <span style="display:flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:#e3001b;display:inline-block;"></span>1–2</span>
-                            <span style="display:flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:#f1c40f;display:inline-block;"></span>3</span>
-                            <span style="display:flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:#00b0f0;display:inline-block;"></span>4–5</span>
-                            <span style="display:flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:#003366;display:inline-block;"></span>6</span>
+                        <div :style="iedMetric === 'participacion' ? 'display:flex' : 'display:none'"
+                            style="gap:10px; align-items:center; flex-wrap:wrap;">
+                            <span style="display:flex;align-items:center;gap:3px;"><span
+                                    style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>0
+                                etapas</span>
+                            <span style="display:flex;align-items:center;gap:3px;"><span
+                                    style="width:8px;height:8px;border-radius:50%;background:#e3001b;display:inline-block;"></span>1–2</span>
+                            <span style="display:flex;align-items:center;gap:3px;"><span
+                                    style="width:8px;height:8px;border-radius:50%;background:#f1c40f;display:inline-block;"></span>3</span>
+                            <span style="display:flex;align-items:center;gap:3px;"><span
+                                    style="width:8px;height:8px;border-radius:50%;background:#00b0f0;display:inline-block;"></span>4–5</span>
+                            <span style="display:flex;align-items:center;gap:3px;"><span
+                                    style="width:8px;height:8px;border-radius:50%;background:#003366;display:inline-block;"></span>6</span>
                         </div>
                         <!-- Barra de gradiente (métricas de avance) -->
-                        <div :style="iedMetric !== 'participacion' ? 'display:flex' : 'display:none'" style="align-items:center; gap:6px;">
+                        <div :style="iedMetric !== 'participacion' ? 'display:flex' : 'display:none'"
+                            style="align-items:center; gap:6px;">
                             <span>0%</span>
                             <div style="flex:1; height:8px; border-radius:4px;"
                                 :style="iedMetric==='pct_avance_global' ? 'background:linear-gradient(to right,#bfdbfe,#1e40af)' : iedMetric==='eje_transformacion_practicas' ? 'background:linear-gradient(to right,#bbf7d0,#15803d)' : iedMetric==='eje_descenso_curricular' ? 'background:linear-gradient(to right,#fed7aa,#c2410c)' : 'background:#e2e8f0'">
@@ -1100,10 +1117,12 @@
                     <!-- Fila A: solo título -->
                     <div style="padding:10px 14px 4px; display:flex; align-items:center; gap:6px;">
                         <span style="font-size:0.85rem; font-weight:700; color:#0f172a;">Avance por Municipio</span>
-                        <a href="guia.html#mapa-municipio" target="_blank" style="text-decoration:none;" title="Ver guía de uso: Mapa Coroplético">
-                            <span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.6rem;font-weight:800;transition:all 0.2s;"
-                                  onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
-                                  onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
+                        <a href="guia.html#mapa-municipio" target="_blank" style="text-decoration:none;"
+                            title="Ver guía de uso: Mapa Coroplético">
+                            <span
+                                style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.6rem;font-weight:800;transition:all 0.2s;"
+                                onmouseover="this.style.background='#cbd5e1'; this.style.color='#1e293b';"
+                                onmouseout="this.style.background='#e2e8f0'; this.style.color='#64748b';">i</span>
                         </a>
                     </div>
                     <!-- Fila B: botones métrica -->
@@ -1119,14 +1138,17 @@
                             class="map-metric-btn">A. Descenso Curricular</button>
                     </div>
                     <!-- Fila C: escala + sin datos + hint -->
-                    <div style="display:flex; align-items:center; gap:8px; padding:2px 14px 6px; border-bottom:1px solid #f1f5f9; font-size:0.58rem; color:#64748b;">
+                    <div
+                        style="display:flex; align-items:center; gap:8px; padding:2px 14px 6px; border-bottom:1px solid #f1f5f9; font-size:0.58rem; color:#64748b;">
                         <span>0%</span>
                         <div style="flex:1; height:7px; border-radius:4px; min-width:40px;"
                             :style="`background:linear-gradient(to right,${choroMetric==='pct_avance_global'?'#bfdbfe,#1d4ed8':choroMetric==='eje_transformacion_practicas'?'#bbf7d0,#15803d':'#fed7aa,#c2410c'})`">
                         </div>
                         <span>100%</span>
                         <span style="display:flex;align-items:center;gap:3px;margin-left:8px;font-style:italic;">
-                            <span style="display:inline-block;width:10px;height:10px;background:#94a3b8;border-radius:2px;"></span>Sin datos
+                            <span
+                                style="display:inline-block;width:10px;height:10px;background:#94a3b8;border-radius:2px;"></span>Sin
+                            datos
                         </span>
                         <span style="color:#3b82f6;margin-left:4px;">· Click = filtrar</span>
                     </div>
@@ -1169,6 +1191,18 @@
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:40px;">
+
+                    <!-- ── SEPARADOR MÓDULO FORMACIÓN ── -->
+                    <div style="margin-top:20px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-radius:20px; border:1px solid #bfdbfe; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                        <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:8px;">
+                            <div style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                            <h2 style="font-size:1.4rem; font-weight:900; color:#1e40af; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
+                                Módulo: Formación de Profesores
+                            </h2>
+                            <div style="width:12px; height:12px; border-radius:50%; background:#3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                        </div>
+                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">Análisis detallado de las etapas de formación profesoral (E1 - E6)</p>
+                    </div>
 
                     <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL ── -->
                     <div>
@@ -1242,7 +1276,8 @@
                                 <div :style="`background:${metric.bg}; border:1px solid ${metric.border}; border-radius:12px; padding:18px; height:220px; display:flex; flex-direction:column;`"
                                     class="hover-card">
                                     <!-- Header -->
-                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                                    <div
+                                        style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                                         <h5 :style="`font-size:0.72rem; font-weight:800; color:${metric.color}; margin:0; text-transform:uppercase; letter-spacing:0.04em; line-height:1.3; max-width:70%;`"
                                             x-text="metric.label"></h5>
                                         <template x-if="getMetricasStats(metric.key)">
@@ -1250,12 +1285,14 @@
                                                 <div style="font-size:1rem; font-weight:900;"
                                                     :style="`color:${metric.color}`"
                                                     x-text="getMetricasStats(metric.key).avg + '%'"></div>
-                                                <div style="font-size:0.5rem; color:#94a3b8; font-weight:700;">PROMEDIO</div>
+                                                <div style="font-size:0.5rem; color:#94a3b8; font-weight:700;">PROMEDIO
+                                                </div>
                                             </div>
                                         </template>
                                     </div>
                                     <!-- Bars -->
-                                    <div style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:6px 2px 2px 2px; background:rgba(255,255,255,0.6); border-radius:8px;">
+                                    <div
+                                        style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:6px 2px 2px 2px; background:rgba(255,255,255,0.6); border-radius:8px;">
                                         <template x-for="bin in getMetricasDistribution(metric.key)">
                                             <div :style="`flex:1; background:${metric.color}; height:${Math.max(bin.height, 2)}%; opacity:0.82; border-radius:2px 2px 0 0;`"
                                                 :title="`${bin.count} instituciones · ${bin.rangeStart}%–${bin.rangeEnd}%`">
@@ -1269,7 +1306,9 @@
                                         <span style="font-size:0.5rem; font-weight:700; color:#94a3b8;">100%</span>
                                     </div>
                                     <!-- Count -->
-                                    <div style="font-size:0.55rem; color:#64748b; margin-top:4px;" x-text="(getMetricasStats(metric.key)?.count || 0) + ' instituciones con datos'"></div>
+                                    <div style="font-size:0.55rem; color:#64748b; margin-top:4px;"
+                                        x-text="(getMetricasStats(metric.key)?.count || 0) + ' instituciones con datos'">
+                                    </div>
                                 </div>
                             </template>
 
@@ -1457,20 +1496,28 @@
 
                                             <div
                                                 style="display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto; padding-right:8px;">
-                                                <template x-for="item in getQualitativeDistribution(stage, qType.id, qType.color)">
+                                                <template
+                                                    x-for="item in getQualitativeDistribution(stage, qType.id, qType.color)">
                                                     <div>
-                                                        <div style="display:flex; flex-direction:column; gap:4px; font-size:0.65rem; font-weight:700; margin-bottom:4px;">
-                                                            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-                                                                <span x-text="item.label" style="color:#334155; flex:1; padding-right:10px;"></span>
-                                                                <span :style="`color:${qType.color};`" x-text="item.count + ' (' + item.totalPct + '%)'"></span>
+                                                        <div
+                                                            style="display:flex; flex-direction:column; gap:4px; font-size:0.65rem; font-weight:700; margin-bottom:4px;">
+                                                            <div
+                                                                style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                                                <span x-text="item.label"
+                                                                    style="color:#334155; flex:1; padding-right:10px;"></span>
+                                                                <span :style="`color:${qType.color};`"
+                                                                    x-text="item.count + ' (' + item.totalPct + '%)'"></span>
                                                             </div>
                                                             <!-- Explicación (2 frases) -->
-                                                            <div x-show="diccionarioCualitativo[qType.id] && diccionarioCualitativo[qType.id][item.label]" x-text="diccionarioCualitativo[qType.id][item.label]"
-                                                                 style="font-size:0.58rem; color:#64748b; font-weight:500; font-style:italic; line-height:1.4; padding-left:14px; border-left:2px solid #e2e8f0; margin-top:2px;">
+                                                            <div x-show="diccionarioCualitativo[qType.id] && diccionarioCualitativo[qType.id][item.label]"
+                                                                x-text="diccionarioCualitativo[qType.id][item.label]"
+                                                                style="font-size:0.58rem; color:#64748b; font-weight:500; font-style:italic; line-height:1.4; padding-left:14px; border-left:2px solid #e2e8f0; margin-top:2px;">
                                                             </div>
                                                         </div>
-                                                        <div style="height:8px; background:#e2e8f0; border-radius:10px; overflow:hidden; margin-top:4px; margin-bottom:10px;">
-                                                            <div :style="item.barStyle" style="transition: width 1000ms ease-in-out;"></div>
+                                                        <div
+                                                            style="height:8px; background:#e2e8f0; border-radius:10px; overflow:hidden; margin-top:4px; margin-bottom:10px;">
+                                                            <div :style="item.barStyle"
+                                                                style="transition: width 1000ms ease-in-out;"></div>
                                                         </div>
                                                     </div>
                                                 </template>
@@ -1488,6 +1535,161 @@
 
                             </div>
                         </template>
+                    </div>
+
+                    <!-- ── SEPARADOR MÓDULO FAMILIA ── -->
+                    <div style="margin-top:80px; margin-bottom:40px; padding:25px; background:linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-radius:20px; border:1px solid #bbf7d0; text-align:center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                        <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:8px;">
+                            <div style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);"></div>
+                            <h2 style="font-size:1.4rem; font-weight:900; color:#065f46; margin:0; text-transform:uppercase; letter-spacing:0.15em;">
+                                Módulo: Familia
+                            </h2>
+                            <div style="width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);"></div>
+                        </div>
+                        <p style="font-size:0.85rem; color:#64748b; font-weight:500; margin:0; letter-spacing:0.02em;">Análisis detallado del componente de acompañamiento y desarrollo familiar</p>
+                    </div>
+
+                    <!-- ── SUBSECCIÓN: CONTEXTO Y AVANCE GLOBAL - FAMILIA ── -->
+                    <div style="margin-bottom:50px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                            <h4 style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                Contexto y Avance Global - Familia</h4>
+                            <div style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
+                            <template x-for="metric in [
+                                { key: 'familia_avance_global', label: '% Avance Global Familia',        color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
+                                { key: 'familia_eje_1',         label: 'Consolidación del Comité',       color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
+                                { key: 'familia_eje_2',         label: 'Reconocimiento del Componente',  color: '#047857', bg: '#f0fdfa', border: '#99f6e4' },
+                                { key: 'familia_eje_3',         label: 'Constitución del Comité',        color: '#065f46', bg: '#f7fee7', border: '#d9f99d' }
+                            ]">
+                                <div :style="`background:${metric.bg}; border:1px solid ${metric.border}; border-radius:12px; padding:18px; height:220px; display:flex; flex-direction:column;`"
+                                    class="hover-card">
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                                        <h5 :style="`font-size:0.72rem; font-weight:800; color:${metric.color}; margin:0; text-transform:uppercase; letter-spacing:0.04em; line-height:1.3; max-width:70%;`"
+                                            x-text="metric.label"></h5>
+                                        <template x-if="getMetricasStats(metric.key)">
+                                            <div style="text-align:right; flex-shrink:0;">
+                                                <div style="font-size:1rem; font-weight:900;"
+                                                    :style="`color:${metric.color}`"
+                                                    x-text="getMetricasStats(metric.key).avg + '%'"></div>
+                                                <div style="font-size:0.5rem; color:#94a3b8; font-weight:700;">PROMEDIO</div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div style="display:flex; align-items:flex-end; gap:2px; flex:1; padding:6px 2px 2px 2px; background:rgba(255,255,255,0.6); border-radius:8px;">
+                                        <template x-for="bin in getMetricasDistribution(metric.key)">
+                                            <div :style="`flex:1; background:${metric.color}; height:${Math.max(bin.height, 2)}%; opacity:0.82; border-radius:2px 2px 0 0;`"
+                                                :title="`${bin.count} instituciones · ${bin.rangeStart}%–${bin.rangeEnd}%`">
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                                        <span style="font-size:0.5rem; font-weight:700; color:#94a3b8;">0%</span>
+                                        <span style="font-size:0.5rem; font-weight:700; color:#94a3b8;">100%</span>
+                                    </div>
+                                    <div style="font-size:0.55rem; color:#64748b; margin-top:4px;"
+                                        x-text="(getMetricasStats(metric.key)?.count || 0) + ' instituciones con datos'">
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- ── SUBSECCIÓN: FAMILIA AGREGADO ── -->
+                    <div style="margin-top:40px;">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                                <h4
+                                    style="font-size:0.9rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                    Desempeño Específico Colegios - Familia</h4>
+                                <div
+                                    style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; flex-direction:column; gap:30px;">
+                                <template x-for="stageNum in [1, 2, 3, 4, 5]" :key="'fam-gen-stg-' + stageNum">
+                                    <div x-show="diccionarioFamilia.some(f => f.etapa === stageNum)">
+                                        <div style="font-weight:800; font-size:0.85rem; color:#1e293b; text-transform:uppercase; border-bottom:2px solid #e2e8f0; padding-bottom:6px; margin-bottom:15px;"
+                                            x-text="'Etapa ' + stageNum + ' - ' + (diccionarioFamilia.find(f => f.etapa === stageNum) ? diccionarioFamilia.find(f => f.etapa === stageNum).etapa_nombre : '')">
+                                        </div>
+                                        <div
+                                            style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                                            <template
+                                                x-for="famDef in diccionarioFamilia.filter(f => f.etapa === stageNum)"
+                                                :key="famDef.id">
+                                                <div style="padding:16px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; transition:all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
+                                                    class="hover-card">
+                                                    <div
+                                                        style="font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                                                        <span x-text="famDef.criterio_nombre"
+                                                            style="flex:1; line-height:1.3;"></span>
+                                                        <div style="text-align:right;">
+                                                            <span
+                                                                style="display:block; color:#10b981; font-size:1.1rem; font-weight:800;"
+                                                                x-text="fmtNumOrStr(getFamiliaAverage(famDef.id))"></span>
+                                                            <span
+                                                                style="font-size:0.5rem; color:#94a3b8; font-weight:600;">PROMEDIO</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Stats Row Summary -->
+                                                    <template x-if="getFamiliaStats(famDef.id)">
+                                                        <div
+                                                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8fafc; padding:4px 10px; border-radius:6px; border:1px solid #f1f5f9;">
+                                                            <div>
+                                                                <span
+                                                                    style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:4px;">DE:</span>
+                                                                <span style="font-size:0.7rem; font-weight:700; color:#475569;"
+                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).sd)"></span>
+                                                            </div>
+                                                            <div style="font-size:0.7rem; font-weight:700; color:#64748b;">
+                                                                <span
+                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q1)"></span>
+                                                                |
+                                                                <span x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q2)"
+                                                                    style="color:#10b981;"></span> |
+                                                                <span
+                                                                    x-text="fmtNumOrStr(getFamiliaStats(famDef.id).q3)"></span>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+
+                                                    <!-- Chart Container -->
+                                                    <div style="position:relative; margin-top:10px; margin-bottom:12px;">
+                                                        <div
+                                                            style="display:flex; align-items:flex-end; gap:3px; height:50px; padding:0 2px;">
+                                                            <template x-for="h in getFamiliaDistribution(famDef.id)">
+                                                                <div :style="`flex:1; background:#cbd5e1; height:${Math.max(h.height, 3)}%; opacity:${h.height > 0 ? 1 : 0.4}`"
+                                                                    style="border-radius:2px 2px 0 0; min-width:6px; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;"
+                                                                    @mouseenter="$el.style.background = '#10b981'"
+                                                                    @mouseleave="$el.style.background = '#cbd5e1'"
+                                                                    :title="`${h.count} instituciones (${h.range})`"></div>
+                                                            </template>
+                                                        </div>
+                                                        <!-- Labels for chart range (0 to 100%) -->
+                                                        <div
+                                                            style="display:flex; justify-content:space-between; margin-top:6px; border-top:1px solid #f1f5f9; padding-top:4px;">
+                                                            <span
+                                                                style="font-size:0.55rem; color:#94a3b8; font-weight:600;">0%</span>
+                                                            <span
+                                                                style="font-size:0.55rem; color:#94a3b8; font-weight:600;">100%</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        style="font-size:0.65rem; color:#64748b; line-height:1.4;">
+                                                        <strong>Ejes:</strong> <span x-text="famDef.ejes"></span>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </main>
@@ -1687,6 +1889,11 @@
                         </div>
 
                         <!-- ── MÉTRICAS GLOBALES Y EJES TRANSVERSALES ── -->
+                        <div style="margin-bottom:15px; text-align:center;">
+                            <span style="font-size:0.6rem; font-weight:900; color:#1e40af; text-transform:uppercase; letter-spacing:0.1em; background:#eff6ff; padding:2px 10px; border-radius:99px; border:1px solid #bfdbfe;">
+                                Módulo: Formación
+                            </span>
+                        </div>
                         <template x-if="selectedIED.metricas">
                             <div style="margin-bottom:24px;">
                                 <!-- Título sección -->
@@ -1758,6 +1965,43 @@
                                         </div>
                                         <div style="font-size:0.55rem; color:#ea580c; margin-top:5px;">Eje transversal
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Métricas Familia Sidebar -->
+                                <div style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
+                                    <h4 style="font-size:0.85rem; font-weight:800; color:#10b981; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                        Avance Familia</h4>
+                                    <div style="flex:1; height:2px; background:linear-gradient(to right, #34d399, transparent); opacity:0.3;">
+                                    </div>
+                                </div>
+
+                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
+                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Avance Global</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#10b981;" x-text="selectedIED.metricas.familia_avance_global != null ? Math.round(selectedIED.metricas.familia_avance_global * 100) + '%' : 'N/D'"></div>
+                                    </div>
+                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 1: Comité</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#059669;" x-text="selectedIED.metricas.familia_eje_1 != null ? Math.round(selectedIED.metricas.familia_eje_1 * 100) + '%' : 'N/D'"></div>
+                                    </div>
+                                </div>
+                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:10px;">
+                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 2: Reconocimiento</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#047857;" x-text="selectedIED.metricas.familia_eje_2 != null ? Math.round(selectedIED.metricas.familia_eje_2 * 100) + '%' : 'N/D'"></div>
+                                    </div>
+                                    <div style="background:linear-gradient(135deg,#f0fdf4,#ffffff); border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center;">
+                                        <div style="font-size:0.55rem; font-weight:800; color:#065f46; text-transform:uppercase; margin-bottom:4px;">Eje 3: Constitución</div>
+                                        <div style="font-size:1.2rem; font-weight:900; color:#065f46;" x-text="selectedIED.metricas.familia_eje_3 != null ? Math.round(selectedIED.metricas.familia_eje_3 * 100) + '%' : 'N/D'"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Detalle por Etapas -->
+                                <div style="display:flex; align-items:center; gap:10px; margin-top:24px; margin-bottom:14px;">
+                                    <h4 style="font-size:0.85rem; font-weight:800; color:#475569; margin:0; text-transform:uppercase; letter-spacing:0.05em;">
+                                        Detalle de Formación</h4>
+                                    <div style="flex:1; height:2px; background:linear-gradient(to right, #cbd5e1, transparent); opacity:0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -2586,8 +2830,10 @@
                                                 <div class="qual-item-list">
                                                     <template
                                                         x-for="catItem in getInstitutionalQualitativeCategories(s, typeObj.id)">
-                                                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
-                                                            <div class="qual-item" :class="typeObj.class" style="margin-bottom:0;">
+                                                        <div
+                                                            style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+                                                            <div class="qual-item" :class="typeObj.class"
+                                                                style="margin-bottom:0;">
                                                                 <div style="flex-shrink: 0; margin-top: 2px;">
                                                                     <div style="width: 4px; height: 4px; border-radius: 50%;"
                                                                         :style="'background: currentColor'"></div>
@@ -2595,8 +2841,9 @@
                                                                 <span x-text="catItem"></span>
                                                             </div>
                                                             <!-- Explicación (2 frases) -->
-                                                            <div x-show="diccionarioCualitativo[typeObj.id] && diccionarioCualitativo[typeObj.id][catItem]" x-text="diccionarioCualitativo[typeObj.id][catItem]"
-                                                                 style="font-size:0.65rem; color:#64748b; font-style:italic; line-height:1.4; margin-left:14px; padding-left:8px; border-left:2px solid #e2e8f0;">
+                                                            <div x-show="diccionarioCualitativo[typeObj.id] && diccionarioCualitativo[typeObj.id][catItem]"
+                                                                x-text="diccionarioCualitativo[typeObj.id][catItem]"
+                                                                style="font-size:0.65rem; color:#64748b; font-style:italic; line-height:1.4; margin-left:14px; padding-left:8px; border-left:2px solid #e2e8f0;">
                                                             </div>
                                                         </div>
                                                     </template>
@@ -2653,6 +2900,78 @@
 
                                 </div><!-- /stage-body -->
                             </div><!-- /stage-block -->
+                        </template>
+
+                        <div style="margin-top:30px; margin-bottom:15px; border-top:2px solid #bbf7d0; padding-top:20px; text-align:center;">
+                            <span style="font-size:0.75rem; font-weight:900; color:#065f46; text-transform:uppercase; letter-spacing:0.1em; background:#f0fdf4; padding:4px 12px; border-radius:99px;">
+                                Módulo: Familia
+                            </span>
+                        </div>
+
+                        <!-- ── Reporte Individual Familia ── -->
+                        <template x-if="selectedIED.familia && Object.keys(selectedIED.familia).length > 0">
+                            <div class="stage-block" style="margin-top: 20px;">
+                                <div class="stage-header" style="background: #10b981;">
+                                    <span class="stage-title">ETAPA - FAMILIA</span>
+                                </div>
+                                <div class="stage-body">
+                                    <div x-data="{ openFam: false }">
+                                        <div
+                                            style="font-weight:700;font-size:0.75rem;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:15px;">
+                                            Etapas Familia
+                                        </div>
+                                        <div style="display:flex; flex-direction:column; gap:20px;">
+                                            <template x-for="stageNum in [1, 2, 3, 4, 5]"
+                                                :key="'fam-ind-stg-' + stageNum">
+                                                <div
+                                                    x-show="diccionarioFamilia.some(f => f.etapa === stageNum && selectedIED.familia[f.id] != null)">
+                                                    <div style="font-size:0.7rem; font-weight:700; color:#64748b; margin-bottom:8px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;"
+                                                        x-text="'Etapa ' + stageNum + ' - ' + (diccionarioFamilia.find(f => f.etapa === stageNum) ? diccionarioFamilia.find(f => f.etapa === stageNum).etapa_nombre : '')">
+                                                    </div>
+                                                    <div class="criterios-grid">
+                                                        <template
+                                                            x-for="famDef in diccionarioFamilia.filter(f => f.etapa === stageNum)"
+                                                            :key="famDef.id">
+                                                            <template x-if="selectedIED.familia[famDef.id] != null">
+                                                                <div class="criterio-card" @click="openFam = !openFam"
+                                                                    :class="openFam ? 'expanded' : ''">
+                                                                    <div style="position: relative;">
+                                                                        <div class="crit-label"
+                                                                            x-text="famDef.criterio_nombre"
+                                                                            style="font-size: 0.65rem; line-height: 1.2;">
+                                                                        </div>
+                                                                        <div class="crit-value"
+                                                                            x-text="fmtNumOrStr(selectedIED.familia[famDef.id])">
+                                                                        </div>
+                                                                        <div class="crit-bar">
+                                                                            <div class="crit-bar-fill"
+                                                                                :style="'width:' + Math.min(100, Math.round(selectedIED.familia[famDef.id]*100)) + '%;background:' + criterioColor(selectedIED.familia[famDef.id])">
+                                                                            </div>
+                                                                        </div>
+                                                                        <svg class="info-arrow" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="currentColor"
+                                                                            stroke-width="2">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="M19 9l-7 7-7-7" />
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="criterio-details">
+                                                                        <div>
+                                                                            <strong>Ejes:</strong> <span
+                                                                                x-text="famDef.ejes"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -2735,6 +3054,7 @@
                     accionesE5Dictionary: {},
                     accionesE6Dictionary: {},
                     qualitativeData: [],
+                    diccionarioFamilia: [],
 
                     init() {
                         const noCacheSuffix = '?t=' + new Date().getTime();
@@ -2868,6 +3188,13 @@
                                 this.diccionarioCualitativo = data;
                             })
                             .catch(err => console.error("Error loading qualitative dictionary:", err));
+
+                        fetch('data/diccionario_familia.json' + noCacheSuffix)
+                            .then(res => res.json())
+                            .then(data => {
+                                this.diccionarioFamilia = data;
+                            })
+                            .catch(err => console.error("Error loading diccionario_familia:", err));
 
                         fetch('data/data_merged.json' + noCacheSuffix)
                             .then(res => res.json())
@@ -3177,6 +3504,38 @@
                         return sum / vals.length;
                     },
 
+                    getFamiliaAverage(criterionKey) {
+                        const vals = this.filteredIEDs
+                            .map(i => i.familia?.[criterionKey])
+                            .filter(v => typeof v === 'number' && !isNaN(v));
+                        if (vals.length === 0) return 0;
+                        const sum = vals.reduce((a, b) => a + b, 0);
+                        return sum / vals.length;
+                    },
+
+                    getFamiliaDistribution(criterionKey) {
+                        const vals = this.filteredIEDs
+                            .map(i => i.familia?.[criterionKey])
+                            .filter(v => typeof v === 'number' && !isNaN(v));
+
+                        if (vals.length === 0) return [];
+
+                        const binCount = 12;
+                        const bins = new Array(binCount).fill(0);
+                        vals.forEach(v => {
+                            let idx = Math.floor(v * binCount);
+                            if (v === 1) idx = binCount - 1;
+                            if (idx >= 0 && idx < binCount) bins[idx]++;
+                        });
+
+                        const maxCount = Math.max(...bins) || 1;
+                        return bins.map((count, i) => ({
+                            height: (count / maxCount) * 100,
+                            count: count,
+                            range: `${Math.round((i / binCount) * 100)}% - ${Math.round(((i + 1) / binCount) * 100)}%`
+                        }));
+                    },
+
                     getGlobalAvanceDistribution(stage) {
                         const vals = this.filteredIEDs
                             .map(i => i.avances?.[stage])
@@ -3451,6 +3810,41 @@
                         };
                     },
 
+                    getFamiliaStats(criterionKey) {
+                        const vals = this.filteredIEDs
+                            .map(i => i.familia?.[criterionKey])
+                            .filter(v => typeof v === 'number' && !isNaN(v));
+
+                        if (vals.length === 0) return null;
+
+                        vals.sort((a, b) => a - b);
+                        const n = vals.length;
+                        const sum = vals.reduce((a, b) => a + b, 0);
+                        const mean = sum / n;
+
+                        const variance = vals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / n;
+                        const sd = Math.sqrt(variance);
+
+                        const getQ = (q) => {
+                            const pos = (n - 1) * q;
+                            const base = Math.floor(pos);
+                            const rest = pos - base;
+                            if (vals[base + 1] !== undefined) {
+                                return vals[base] + rest * (vals[base + 1] - vals[base]);
+                            } else {
+                                return vals[base];
+                            }
+                        };
+
+                        return {
+                            mean: mean,
+                            sd: sd,
+                            q1: getQ(0.25),
+                            q2: getQ(0.50), // Median
+                            q3: getQ(0.75)
+                        };
+                    },
+
                     getTotalParticipantes(ied) {
                         let total = 0;
                         if (ied.participantes) {
@@ -3563,13 +3957,13 @@
                             munMap[munCode].count++;
                         });
 
-                        console.log('[Choro] munMap entries:', Object.keys(munMap).length, 'sample:', Object.entries(munMap).slice(0,3));
+                        console.log('[Choro] munMap entries:', Object.keys(munMap).length, 'sample:', Object.entries(munMap).slice(0, 3));
 
                         // Wide color scales per metric (light=low, saturated dark=high)
                         const scales = {
-                            pct_avance_global:            (t) => `hsl(${210 + t*15},${55+t*35}%,${88-t*63}%)`,
-                            eje_transformacion_practicas: (t) => `hsl(${138},${50+t*42}%,${86-t*64}%)`,
-                            eje_descenso_curricular:      (t) => `hsl(${32 - t*12},${70+t*25}%,${88-t*60}%)`
+                            pct_avance_global: (t) => `hsl(${210 + t * 15},${55 + t * 35}%,${88 - t * 63}%)`,
+                            eje_transformacion_practicas: (t) => `hsl(${138},${50 + t * 42}%,${86 - t * 64}%)`,
+                            eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`
                         };
                         const getColor = scales[this.choroMetric] || scales.pct_avance_global;
 
@@ -3616,7 +4010,7 @@
                                 });
                                 // Hover highlight
                                 layer.on('mouseover', () => layer.setStyle({ weight: 2.5, color: '#334155' }));
-                                layer.on('mouseout',  () => layer.setStyle({ weight: 1,   color: '#fff' }));
+                                layer.on('mouseout', () => layer.setStyle({ weight: 1, color: '#fff' }));
                             }
                         }).addTo(this.choroMapInstance);
 
@@ -3634,9 +4028,9 @@
                             if (val == null || isNaN(val)) return '#94a3b8';
                             const t = Math.max(0, Math.min(1, val));
                             const colors = {
-                                pct_avance_global:            (t) => `hsl(${210 + t*15},${55+t*35}%,${88-t*63}%)`,
-                                eje_transformacion_practicas: (t) => `hsl(${138},${50+t*42}%,${86-t*64}%)`,
-                                eje_descenso_curricular:      (t) => `hsl(${32 - t*12},${70+t*25}%,${88-t*60}%)`
+                                pct_avance_global: (t) => `hsl(${210 + t * 15},${55 + t * 35}%,${88 - t * 63}%)`,
+                                eje_transformacion_practicas: (t) => `hsl(${138},${50 + t * 42}%,${86 - t * 64}%)`,
+                                eje_descenso_curricular: (t) => `hsl(${32 - t * 12},${70 + t * 25}%,${88 - t * 60}%)`
                             };
                             return (colors[this.iedMetric] || colors.pct_avance_global)(t);
                         };
@@ -3666,7 +4060,7 @@
                                 eje_descenso_curricular: 'Descenso Curricular'
                             };
                             const metricVal = this.iedMetric !== 'participacion' && i.metricas?.[this.iedMetric] != null
-                                ? `<span style="color:#3b82f6;font-weight:700;">${metricLabels[this.iedMetric]}: ${Math.round(i.metricas[this.iedMetric]*100)}%</span>`
+                                ? `<span style="color:#3b82f6;font-weight:700;">${metricLabels[this.iedMetric]}: ${Math.round(i.metricas[this.iedMetric] * 100)}%</span>`
                                 : '';
                             const tipLines = [
                                 `<b style="font-size:0.9rem">${displayName}</b>`,

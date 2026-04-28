@@ -295,6 +295,41 @@ def merge_data():
             print(f"Error enriching with {establecimientos_path}: {e}")
 
     # ── Output ──
+    # ── 5. Datos Familia ──
+    familia_path = os.path.join(root_dir, 'data', 'REPORTE COLEGIOS - FAMILIA.xlsx')
+    if os.path.exists(familia_path):
+        try:
+            df_fam = pd.read_excel(familia_path, sheet_name='FAMILIA')
+            for _, row in df_fam.iterrows():
+                id_raw = row.get('id')
+                if pd.isna(id_raw): continue
+                dane = str(int(id_raw))
+                if dane in master_data:
+                    fam_data = {}
+                    for col in df_fam.columns:
+                        if col not in ['ied', 'id']:
+                            val = clean_val(row.get(col))
+                            fam_data[col] = val
+                    master_data[dane]["familia"] = fam_data
+            print("  Successfully integrated Familia data")
+            
+            # Exportar diccionario Familia
+            df_fam_dict = pd.read_excel(familia_path, sheet_name='Hoja1')
+            fam_dict_path = os.path.join(root_dir, 'data', 'diccionario_familia.json')
+            # clean nan from dictionary
+            fam_dict = []
+            for _, row in df_fam_dict.iterrows():
+                d = {}
+                for k,v in row.to_dict().items():
+                    d[k] = clean_val(v)
+                fam_dict.append(d)
+                
+            with open(fam_dict_path, 'w', encoding='utf-8') as f:
+                json.dump(fam_dict, f, ensure_ascii=False, indent=2)
+            print("  Successfully generated diccionario_familia.json")
+        except Exception as e:
+            print(f"Error processing Familia: {e}")
+
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(list(master_data.values()), f, ensure_ascii=False, indent=2)
 

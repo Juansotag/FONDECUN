@@ -54,84 +54,135 @@ CRITERIO_EJE = {
 # Criterio que es siempre texto (no numérico)
 TEXT_CRITERIOS = {("e1", "criterio_1")}
 
+# Mapeo de ejes para Familia (basado en el diccionario)
+FAMILIA_EJES_MAP = {
+    "1. Avance en la consolidación del comité": "familia_eje_1",
+    "2. Reconocimiento del componente familiar e intereses declarados sobre familia": "familia_eje_2",
+    "3. Avance en la constitución y consolidación del Comité de Familia": "familia_eje_3"
+}
 
 def calcular_metricas(inst):
     """Dada una institución, calcula y retorna el dict de métricas."""
     criterios = inst.get("criterios", {})
+    familia = inst.get("familia", {})
 
+    # Métricas Formación Profesoral (Blue)
     all_vals = []
     trans_vals = []
     desc_vals = []
 
     for etapa_key in ["e1", "e2", "e3", "e4", "e5", "e6"]:
         for crit_key, cval in (criterios.get(etapa_key) or {}).items():
-            # Ignorar valores texto o None
             if (etapa_key, crit_key) in TEXT_CRITERIOS:
                 continue
             if not isinstance(cval, (int, float)):
                 continue
-            if cval != cval:  # isnan check
+            if cval != cval:  # isnan
                 continue
 
             all_vals.append(cval)
-
             eje = CRITERIO_EJE.get((etapa_key, crit_key))
             if eje == EJE_TRANSFORMACION:
                 trans_vals.append(cval)
             elif eje == EJE_DESCENSO:
                 desc_vals.append(cval)
 
+    # Métricas Familia (Green)
+    # Necesitamos el diccionario para mapear criterios a ejes
+    # Para optimizar, asumimos que el diccionario está cargado o usamos una lógica de prefijos
+    # Sin embargo, como el script corre en lote, cargaremos el diccionario una vez en main
+    # y lo pasaremos o lo usaremos de forma global. 
+    # Por simplicidad en este bloque, usaremos la lógica de ejes directamente si ya sabemos el mapeo.
+    
+    fam_all_vals = []
+    fam_e1_vals = []
+    fam_e2_vals = []
+    fam_e3_vals = []
+
+    # El mapeo de familia lo haremos dinámico en base al prefijo o ID si es posible, 
+    # pero aquí usaremos los datos ya presentes en el objeto 'inst' si merge_data hizo su trabajo.
+    # Nota: merge_data.py ya integra los datos en inst['familia']
+    
+    def get_fam_metrics(fam_data, dicc_fam):
+        f_all, f1, f2, f3 = [], [], [], []
+        for crit_id, val in fam_data.items():
+            if not isinstance(val, (int, float)) or val != val:
+                continue
+            f_all.append(val)
+            # Buscar eje en el diccionario
+            info = next((item for item in dicc_fam if item["id"] == crit_id), None)
+            if info:
+                eje_str = info.get("ejes", "")
+                if "1." in eje_str: f1.append(val)
+                elif "2." in eje_str: f2.append(val)
+                elif "3." in eje_str: f3.append(val)
+        return f_all, f1, f2, f3
+
     def safe_avg(lst):
         return round(sum(lst) / len(lst), 4) if lst else None
 
+    # Estas se calcularán en el loop principal para tener acceso al diccionario
     return {
         "pct_avance_global": safe_avg(all_vals),
         "eje_transformacion_practicas": safe_avg(trans_vals),
         "eje_descenso_curricular": safe_avg(desc_vals),
     }
 
-
 def main():
     root_dir = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(root_dir, "data", "data_merged.json")
+    dicc_fam_path = os.path.join(root_dir, "data", "diccionario_familia.json")
 
     print(f"Leyendo {data_path} ...")
     with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
 
+    dicc_fam = []
+    if os.path.exists(dicc_fam_path):
+        with open(dicc_fam_path, encoding="utf-8") as f:
+            dicc_fam = json.load(f)
+
     updated = 0
     skipped = 0
     for inst in data:
+        # Calcular métricas base
         metricas = calcular_metricas(inst)
-        # Sólo agregar si hay al menos un valor calculado
+        
+        # Calcular métricas Familia
+        fam_data = inst.get("familia", {})
+        f_all, f1, f2, f3 = [], [], [], []
+        for crit_id, val in fam_data.items():
+            if not isinstance(val, (int, float)) or val != val:
+                continue
+            f_all.append(val)
+            info = next((item for item in dicc_fam if item["id"] == crit_id), None)
+            if info:
+                eje_str = info.get("ejes", "")
+                if "1." in eje_str: f1.append(val)
+                elif "2." in eje_str: f2.append(val)
+                elif "3." in eje_str: f3.append(val)
+        
+        def safe_avg(lst):
+            return round(sum(lst) / len(lst), 4) if lst else None
+
+        metricas["familia_avance_global"] = safe_avg(f_all)
+        metricas["familia_eje_1"] = safe_avg(f1)
+        metricas["familia_eje_2"] = safe_avg(f2)
+        metricas["familia_eje_3"] = safe_avg(f3)
+
         if any(v is not None for v in metricas.values()):
             inst["metricas"] = metricas
             updated += 1
         else:
-            inst["metricas"] = metricas  # guarda Nones por consistencia
+            inst["metricas"] = metricas
             skipped += 1
 
-    # Ejemplo de salida
-    sample = next((d for d in data if d.get("metricas", {}).get("pct_avance_global") is not None), None)
-    if sample:
-        print(f"\nEjemplo -> {sample.get('nombre_oficial') or sample.get('institucion')}")
-        for k, v in sample["metricas"].items():
-            label = {
-                "pct_avance_global": "% Avance Global",
-                "eje_transformacion_practicas": "Eje Transformación Prácticas",
-                "eje_descenso_curricular": "Eje Descenso Curricular",
-            }.get(k, k)
-            pct = f"{round(v*100,1)}%" if v is not None else "N/D"
-            print(f"  {label}: {pct}")
-
     print(f"\nInstituciones con métricas calculadas: {updated}")
-    print(f"Instituciones sin datos numéricos:      {skipped}")
-
+    
     with open(data_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    print(f"\nOK: data_merged.json actualizado correctamente.")
-
+    print(f"\nOK: data_merged.json actualizado correctamente con métricas de Familia.")
 
 if __name__ == "__main__":
     main()
